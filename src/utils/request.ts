@@ -23,7 +23,7 @@ service.interceptors.request.use(
 service.interceptors.response.use(
   response => {
     const res = response.data;
-    if (res.status && res.status !== 200) {
+    if (res?.code !== 0) {
       Toast({
         type: "fail",
         message: res.message,

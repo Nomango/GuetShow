@@ -3,8 +3,8 @@ import App from "./App.vue";
 import router from "./router";
 import store from "./store";
 import FastClick from "fastclick";
+import "lib-flexible";
 
-import "reset-css";
 import "@/styles/index.scss";
 
 import "@/plugins/vant";

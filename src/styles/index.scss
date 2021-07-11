@@ -1,16 +1,32 @@
 @import "./variables.scss";
 @import "./mixin.scss";
+@import "./reset.css";
+
+@font-face {
+  font-family: "FZYINGLT_ZHUNJW";
+  /* 重命名字体名 */
+  src: url("../assets/font/FZYingLTJ_Zhun.TTF");
+  font-weight: normal;
+  font-style: normal;
+}
 
 html,
 body .app {
   color: #333333;
-  font-family: Arial, Helvetica, "STHeiti STXihei", "Microsoft YaHei", Tohoma,
-    sans-serif;
+  font-family: "FZYINGLT_ZHUNJW", Arial, Helvetica, "STHeiti STXihei",
+    "Microsoft YaHei", Tohoma, sans-serif;
   background-color: $background-color;
 }
 
 html,
 body {
   width: 100%;
-  height: 100%;
+  height: 100vh;
+  overflow: hidden;
+}
+
+.u-ellipsis {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }

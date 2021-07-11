@@ -18,11 +18,12 @@ module.exports = {
     semi: "off",
     "no-explicit-any": "off",
     "space-before-blocks": [2, "always"],
-    "space-before-function-paren": [2, "never"],
+    "space-before-function-paren": "off",
     "space-in-parens": [2, "never"],
     "no-return-assign": [2, "except-parens"],
     "@typescript-eslint/explicit-module-boundary-types": "off",
     "@typescript-eslint/no-var-requires": "off",
-    "no-new": "off"
+    "no-new": "off",
+    "no-useless-return": "off"
   }
 };
