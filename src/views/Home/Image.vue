@@ -114,8 +114,8 @@ export default class yourComponent extends Vue {
 
 <style lang="scss">
 .guet-icon {
-  --path: #2f3545;
-  --dot: #5628ee;
+  --path: #2f354575;
+  --dot: #5628ee95;
   --duration: 3s;
   width: 44px;
   height: 44px;
@@ -247,6 +247,7 @@ export default class yourComponent extends Vue {
 </style>
 <style lang="scss" scoped>
 .guet-background {
+  margin-top: 100px;
   position: absolute;
   left: 0;
   top: 0;

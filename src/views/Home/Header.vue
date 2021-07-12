@@ -1,5 +1,6 @@
 <template>
   <header class="header-container">
+    <img class="header-logo" src="../../assets/Image/logo.png" alt="" />
     <div class="header-time">2021</div>
     <h1 class="header-title">毕设展览</h1>
     <div class="header-description">
@@ -8,14 +9,14 @@
           <img src="../../assets/Image/localtion.svg" alt="" />
         </span>
         <span class="header-description-text">
-          桂林电子科技大学F栋教学楼5楼报告厅
+          花江校区 四创中心4号楼108室
         </span>
       </div>
       <div class="header-description-item people-description-item">
         <span class="header-description-icon header-time-icon">
-          <img src="../../assets/Image/people.svg" alt="" />
+          <img src="../../assets/Image/time.svg" alt="" />
         </span>
-        <span class="header-description-text">2021.7.5 - 2021.8.1</span>
+        <span class="header-description-text">于 2021.7 启动</span>
       </div>
     </div>
   </header>
@@ -29,25 +30,22 @@ export default class Header extends Vue {}
 </script>
 
 <style lang="scss" scoped>
+.header-logo {
+  position: relative;
+  display: block;
+  width: 45%;
+  margin: 40px auto 180px;
+}
+
 .header-container {
   position: relative;
-  margin-top: 127px;
+  margin-top: 40px;
   padding-left: 22px;
   z-index: 1;
 }
 
 .header-time {
   font-size: 42px;
-}
-
-.header-logo {
-  position: relative;
-  display: inline-block;
-  width: 96px;
-  height: 96px;
-  border-radius: 50%;
-  margin: 40px 0;
-  border: 1px solid #fff;
 }
 
 .header-title {
@@ -62,13 +60,13 @@ export default class Header extends Vue {}
 
   &.location-description-item {
     .header-description-text {
-      margin-left: -30px;
+      margin-left: -23px;
     }
   }
 
   &.people-description-item {
     .header-description-text {
-      margin-left: -13.5px;
+      margin-left: -9px;
     }
   }
 }

@@ -54,7 +54,7 @@
     </main>
     <footer class="home-footer">
       <div class="copyright">
-        <p class="copyright-item">Powered by Nomango</p>
+        <!-- <p class="copyright-item">Powered by Nomango</p> -->
         <p class="copyright-item">Copyright (c) 2021-2022</p>
       </div>
     </footer>
@@ -165,7 +165,7 @@ export default class Home extends Vue {
 }
 
 .divider-wrap {
-  margin-top: 60px;
+  margin-top: 120px;
   display: flex;
   justify-content: center;
 }
