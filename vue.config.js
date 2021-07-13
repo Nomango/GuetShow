@@ -45,11 +45,18 @@ module.exports = {
   configureWebpack: {
     // provide the app's title in webpack's name field, so that
     // it can be accessed in index.html to inject the correct title.
-    name: '桂林电子科技大学2021届毕业设计展览',
+    // name: '桂林电子科技大学2021届毕业设计展览',
     plugins: [new CopyWebpackPlugin([{ from: resolve("./public/CNAME") }])],
   },
   chainWebpack(config) {
     config.resolve.alias.set("@", resolve("src"));
+
+    config
+      .plugin('html')
+      .tap(args => {
+        args[0].title = '桂林电子科技大学2021届毕业设计展览'
+        return args
+      });
 
     config.plugin("preload").tap(() => [
       {
