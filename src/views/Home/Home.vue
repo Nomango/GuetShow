@@ -9,10 +9,10 @@
         </van-divider>
       </div>
 
-      <div class="swiper-container">
+      <div v-if="list.length > 0" class="swiper-container">
         <div class="swiper-wrapper">
-          <div class="swiper-slide">
-            <div v-for="item in list" :key="item.id" class="project-item">
+          <div class="swiper-slide" v-for="item in list" :key="item.id">
+            <div class="project-item">
               <div class="project-image-wrap">
                 <img v-lazy="item.cover" class="project-image" />
               </div>
@@ -62,7 +62,7 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue, Prop } from "vue-property-decorator";
+import { Component, Vue, Prop, Watch } from "vue-property-decorator";
 import Swiper from "swiper";
 import "swiper/swiper.min.css";
 
@@ -114,8 +114,6 @@ export default class Home extends Vue {
   }
 
   init() {
-    const self = this as any;
-
     new Swiper(".swiper-container", {
       slidesPerView: "auto",
       watchSlidesProgress: true,
@@ -129,7 +127,7 @@ export default class Home extends Vue {
 
             const style = slide.style;
             style.transform = style.MsTransform = style.msTransform = style.MozTransform = style.OTransform = style.transform =
-              "translate3d(0px, 0," + -Math.abs(progress * 150) + "px)";
+              "translate3d(0px, 0," + -Math.abs(progress * 250) + "px)";
           }
         },
         setTransition: function(this: any, swiper: Swiper, transition: number) {
@@ -145,6 +143,13 @@ export default class Home extends Vue {
 
   mounted() {
     this.init();
+  }
+
+  @Watch("list")
+  listChange() {
+    this.$nextTick(() => {
+      this.init();
+    });
   }
 }
 </script>
@@ -210,7 +215,7 @@ export default class Home extends Vue {
   width: 84.5%;
   min-height: 270px;
   transform-style: preserve-3d;
-  transition-duration: 300ms;
+  transition: transform 0.3s;
 
   &.last-slide {
     display: flex;

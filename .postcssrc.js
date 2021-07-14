@@ -8,11 +8,11 @@ module.exports = {
         "ff > 31",
         "ie >= 8"
       ]
+    },
+    "postcss-pxtorem": {
+      rootValue: 37.5,
+      propList: ["*"]
+      //selectorBlackList: ['van-']
     }
-    // "postcss-pxtorem": {
-    //   rootValue: 37.5,
-    //   propList: ["*"]
-    //   //selectorBlackList: ['van-']
-    // }
   }
 };
