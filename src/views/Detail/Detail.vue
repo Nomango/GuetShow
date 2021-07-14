@@ -1,11 +1,13 @@
 <template>
   <div class="detail-container">
-    <van-nav-bar
-      fixed
-      left-arrow
-      :title="projectInfo.name"
-      @click-left="handleonClickLeft"
-    />
+    <header class="detail-header">
+      <div class="detail-header-left" @click="handleonClickLeft">
+        <i class="van-icon van-icon-arrow-left van-nav-bar__arrow"></i>
+      </div>
+      <div class="detail-header-right">
+        <h1 class="detail-header-title">{{ projectInfo.name }}</h1>
+      </div>
+    </header>
     <div class="detail-main">
       <!-- <h2 class="article-title">{{ projectInfo.name }}</h2> -->
       <div class="article-info">
@@ -111,7 +113,42 @@ export default class Detail extends Vue {
   height: 100%;
   font-family: Arial, Helvetica, "STHeiti STXihei", "Microsoft YaHei", Tohoma,
     sans-serif;
-  padding-top: 46px;
+  padding-top: 16px;
+  overflow: auto;
+}
+
+.detail-header {
+  position: relative;
+  display: flex;
+  align-items: center;
+  min-height: 40px;
+}
+
+.detail-header-left {
+  position: absolute;
+  top: -5px;
+  left: 8px;
+  display: flex;
+  align-items: center;
+  padding: 0 8px;
+  font-size: 12px;
+  cursor: pointer;
+  height: 40px;
+
+  .van-icon {
+    color: #1989fa;
+  }
+}
+
+.detail-header-right {
+  color: #323233;
+
+  .detail-header-title {
+    max-width: 60%;
+    margin: 0 auto;
+    font-weight: 500;
+    font-size: 18px;
+  }
 }
 
 .article-title {
@@ -128,6 +165,10 @@ export default class Detail extends Vue {
   display: inline-flex;
   align-items: center;
 
+  &:not(:first-of-type) {
+    margin-left: 12px;
+  }
+
   .article-info-text {
     margin-left: 6px;
   }
@@ -142,7 +183,12 @@ export default class Detail extends Vue {
   }
 }
 
+.detail-main {
+  height: 100%;
+}
+
 .markdown-body {
+  height: 100%;
   padding: 16px;
 }
 </style>
