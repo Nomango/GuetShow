@@ -344,8 +344,6 @@ export default class List extends Vue {
   width: 100%;
   height: 100%;
   padding-top: 46px;
-  overflow-y: auto;
-  overflow-x: hidden;
   background-color: #f5f9ff;
 }
 
@@ -364,13 +362,18 @@ export default class List extends Vue {
 }
 
 .list-content {
+  display: flex;
+  flex-direction: column;
   position: relative;
+  height: 100%;
   margin-top: 15px;
 }
 
 .list-content .guet-list {
+  flex: 1;
+  overflow: auto;
   margin-top: 20px;
-  padding: 0px 32px;
+  padding: 0px 32px 16px;
 }
 
 .list-select-group {
