@@ -5,7 +5,11 @@
         <i class="van-icon van-icon-arrow-left van-nav-bar__arrow"></i>
       </div>
       <div class="detail-header-right">
-        <img class="detail-header-logo" src="../../assets/Image/logo.png" alt="" />
+        <img
+          class="detail-header-logo"
+          src="../../assets/Image/logo.png"
+          alt=""
+        />
       </div>
     </header>
     <div class="detail-main">
@@ -26,6 +30,7 @@
           <span class="article-info-text">{{ teachers }}</span>
         </div>
       </div>
+      <img class="article-cover" :src="projectInfo.cover" alt="" />
       <div class="markdown-body" v-html="detailContent" />
     </div>
   </div>
@@ -140,9 +145,10 @@ export default class Detail extends Vue {
 
 .detail-header-right {
   color: #323233;
+  height: 40px;
 
   .detail-header-logo {
-    width: 35%;
+    width: 38%;
     display: block;
     margin: 0 auto;
   }
@@ -153,6 +159,13 @@ export default class Detail extends Vue {
     font-weight: 500;
     font-size: 18px;
   }
+}
+
+.article-cover {
+  width: 85%;
+  margin: 10px auto 5px;
+  display: block;
+  border-radius: 8px;
 }
 
 .article-title {
