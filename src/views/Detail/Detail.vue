@@ -5,11 +5,15 @@
         <i class="van-icon van-icon-arrow-left van-nav-bar__arrow"></i>
       </div>
       <div class="detail-header-right">
-        <h1 class="detail-header-title">{{ projectInfo.name }}</h1>
+        <img
+          class="detail-header-logo"
+          src="../../assets/Image/logo.png"
+          alt=""
+        />
       </div>
     </header>
     <div class="detail-main">
-      <!-- <h2 class="article-title">{{ projectInfo.name }}</h2> -->
+      <h2 class="article-title">{{ projectInfo.name }}</h2>
       <div class="article-info">
         <div class="article-info-item">
           <span class="article-info-icon">
@@ -21,11 +25,12 @@
         </div>
         <div class="article-info-item" v-if="teachers">
           <span class="article-info-icon">
-            <img src="../../assets/Image/people.svg" alt="" />
+            <img src="../../assets/Image/teacher.svg" alt="" />
           </span>
           <span class="article-info-text">{{ teachers }}</span>
         </div>
       </div>
+      <img class="article-cover" :src="projectInfo.cover" alt="" />
       <div class="markdown-body" v-html="detailContent" />
     </div>
   </div>
@@ -43,10 +48,10 @@ import { ProjectItem, TeacherItem } from "@/types/home";
     Promise.allSettled([
       fetchMentors(),
       getWorkListById({
-        id: Number(to.params.id)
-      })
+        id: Number(to.params.id),
+      }),
     ])
-      .then(res => {
+      .then((res) => {
         const [{ value: mentorVal }, { value: workVal }] = res as any;
 
         const { data: mentorData } = mentorVal || {};
@@ -64,14 +69,14 @@ import { ProjectItem, TeacherItem } from "@/types/home";
           vm.loading = false;
           vm.projectInfo = {
             ...(workData || {}),
-            teachers: teachers.filter(Boolean)
+            teachers: teachers.filter(Boolean),
           };
         });
       })
       .catch(() => {
         next();
       });
-  }
+  },
 })
 export default class Detail extends Vue {
   projectInfo: ProjectItem = {} as ProjectItem;
@@ -111,8 +116,6 @@ export default class Detail extends Vue {
 .detail-container {
   width: 100%;
   height: 100%;
-  font-family: Arial, Helvetica, "STHeiti STXihei", "Microsoft YaHei", Tohoma,
-    sans-serif;
   padding-top: 16px;
   overflow: auto;
 }
@@ -142,6 +145,13 @@ export default class Detail extends Vue {
 
 .detail-header-right {
   color: #323233;
+  height: 40px;
+
+  .detail-header-logo {
+    width: 38%;
+    display: block;
+    margin: 0 auto;
+  }
 
   .detail-header-title {
     max-width: 60%;
@@ -151,8 +161,17 @@ export default class Detail extends Vue {
   }
 }
 
+.article-cover {
+  width: 85%;
+  margin: 10px auto 5px;
+  display: block;
+  border-radius: 8px;
+}
+
 .article-title {
-  font-size: 18px;
+  margin: 15px;
+  font-size: 25px;
+  font-weight: bold;
   text-align: center;
 }
 
@@ -188,7 +207,7 @@ export default class Detail extends Vue {
 }
 
 .markdown-body {
-  height: 100%;
-  padding: 16px;
+  height: 110%;
+  padding: 22px 16px;
 }
 </style>
