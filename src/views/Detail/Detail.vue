@@ -29,8 +29,23 @@
           </span>
           <span class="article-info-text">{{ teachers }}</span>
         </div>
+        <br />
+        <div class="article-info-item" v-if="level">
+          <span class="article-info-text">{{ level }}</span>
+        </div>
+        <br />
+        <div class="article-info-item">
+          <span class="article-info-text">{{ projectInfo.school }}</span>
+          <span class="article-info-text">{{ projectInfo.major }}</span>
+        </div>
+        <br />
+        <div class="article-info-item" v-if="projectInfo.connect">
+          <span class="article-info-text"
+            >联系方式：{{ projectInfo.connect }}</span
+          >
+        </div>
       </div>
-      <img class="article-cover" :src="projectInfo.cover" alt="" />
+      <!-- <img class="article-cover" :src="projectInfo.cover" alt="" /> -->
       <div class="markdown-body" v-html="detailContent" />
     </div>
   </div>
@@ -85,6 +100,18 @@ export default class Detail extends Vue {
 
   get studentName() {
     return (this.projectInfo.student && this.projectInfo.student.name) || "";
+  }
+
+  get level() {
+    switch (this.projectInfo.level) {
+    case 1:
+      return '一等奖'
+    case 2:
+      return '二等奖'
+    case 3:
+      return '三等奖'
+    }
+    return "";
   }
 
   get teachers() {
@@ -183,6 +210,7 @@ export default class Detail extends Vue {
 .article-info-item {
   display: inline-flex;
   align-items: center;
+  padding-bottom: 5px;
 
   &:not(:first-of-type) {
     margin-left: 12px;
