@@ -63,7 +63,6 @@
     <div class="check-all-btn-box ani"
       swiper-animate-effect="bounceIn"
       swiper-animate-duration="1s"
-      swiper-animate-delay="0.5s"
     >
       <div class="check-all-btn" @click="handleCheckAllClick">
         <van-icon name="wap-nav" />
