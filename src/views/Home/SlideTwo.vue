@@ -4,7 +4,7 @@
       class="ani"
       title="优秀毕设"
       subTitle="Excellent work"
-      swiper-animate-effect="fadeInLeftBig"
+      swiper-animate-effect="bounceIn"
       swiper-animate-duration="1s"
     />
     <div
@@ -60,7 +60,11 @@
         </div>
       </div>
     </div>
-    <div class="check-all-btn-box">
+    <div class="check-all-btn-box ani"
+      swiper-animate-effect="bounceIn"
+      swiper-animate-duration="1s"
+      swiper-animate-delay="0.5s"
+    >
       <div class="check-all-btn" @click="handleCheckAllClick">
         <van-icon name="wap-nav" />
         <span class="check-all-btn-text">查看全部</span>
@@ -155,7 +159,7 @@ export default class SlideTwo extends Vue {
 }
 
 .project-swiper-wrapper {
-  margin-top: 20px;
+  margin-top: 40px;
   margin-bottom: 20px;
   transform-style: preserve-3d;
 }

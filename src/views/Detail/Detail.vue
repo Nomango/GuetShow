@@ -15,6 +15,13 @@
     <div class="detail-main">
       <h2 class="article-title">{{ projectInfo.name }}</h2>
       <div class="article-info">
+        <div class="article-info-item big" v-if="level">
+          <span class="article-info-icon">
+            <img src="../../assets/Image/price.svg" alt="" />
+          </span>
+          <span class="article-info-text">{{ level }}</span>
+        </div>
+        <br />
         <div class="article-info-item">
           <span class="article-info-icon">
             <img src="../../assets/Image/people.svg" alt="" />
@@ -28,10 +35,6 @@
             <img src="../../assets/Image/teacher.svg" alt="" />
           </span>
           <span class="article-info-text">{{ teachers }}</span>
-        </div>
-        <br />
-        <div class="article-info-item" v-if="level">
-          <span class="article-info-text">{{ level }}</span>
         </div>
         <br />
         <div class="article-info-item">
@@ -250,6 +253,14 @@ export default class Detail extends Vue {
     a {
       color: #434343;
     }
+  }
+}
+
+.article-info-item.big {
+  margin-bottom: 8px;
+
+  .article-info-text {
+    font-size: 18px;
   }
 }
 
