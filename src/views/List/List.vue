@@ -8,11 +8,11 @@
       <div class="list-form">
         <div class="list-select-group">
           <Select
-            v-model="listQuery.mentor"
-            placeholder="请选择导师"
-            :active="activeType === 2"
-            @picker-show="handlePickerShow(2)"
-            @select-close="handleSelectClose(2)"
+            v-model="listQuery.school"
+            placeholder="请选择学院"
+            :active="activeType === 1"
+            @picker-show="handlePickerShow(1)"
+            @select-close="handleSelectClose(1)"
           />
           <Select
             v-model="listQuery.level"
@@ -45,6 +45,7 @@
             :key="item.id"
             :data-index="index"
             class="project-item"
+            @click="handleItemClick(item.id)"
           >
             <div class="project-image-wrap">
               <img v-lazy="item.cover" class="project-image" />
@@ -55,7 +56,7 @@
                 class="project-level-image"
               />
             </div>
-            <div class="project-content" @click="handleItemClick(item.id)">
+            <div class="project-content">
               <h2 class="project-title u-ellipsis">{{ item.name }}</h2>
               <div class="project-info">
                 <div class="project-info-image">
@@ -138,6 +139,8 @@ import { debounce } from "@/utils/tools";
         const totalCount = projectResData?.total_count || 0;
         const listData = projectResData?.works || [];
 
+        vm.temp[SELECTTYPE.school] = schoolResData || [];
+
         vm.temp[SELECTTYPE.mentor].origin = mentorResData?.teachers || [];
         vm.temp[SELECTTYPE.mentor].target = (mentorResData?.teachers || []).map(
           (item: TeacherItem) => {
@@ -160,8 +163,8 @@ import { debounce } from "@/utils/tools";
 export default class List extends Vue {
   LevelImage = {
     1: require("../../assets/Image/ranking-1.png"),
-    2: require("../../assets/Image/ranking-1.png"),
-    3: require("../../assets/Image/ranking-1.png")
+    2: require("../../assets/Image/ranking-2.png"),
+    3: require("../../assets/Image/ranking-3.png")
   };
 
   activeType: SELECTTYPE = SELECTTYPE.default;
@@ -169,10 +172,12 @@ export default class List extends Vue {
   listQuery = {
     query: "",
     mentor: "",
-    level: ""
+    level: "",
+    school: ""
   };
 
   temp = {
+    [SELECTTYPE.school]: [],
     [SELECTTYPE.mentor]: {
       origin: [],
       target: []
@@ -422,7 +427,7 @@ export default class List extends Vue {
   padding: 12px;
   box-sizing: border-box;
   box-shadow: 0 8px 12px #ebedf0;
-  border-radius: 12px;
+  border-radius: 6px;
 
   &:not(:last-of-type) {
     margin-bottom: 20px;
@@ -430,9 +435,9 @@ export default class List extends Vue {
 
   .project-image-wrap {
     position: relative;
-    width: 100px;
-    height: 100px;
-    border-radius: 12px;
+    width: 90px;
+    height: 90px;
+    border-radius: 6px;
 
     .project-level-image {
       position: absolute;

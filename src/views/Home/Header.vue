@@ -18,21 +18,24 @@
       <h1
         class="header-title ani"
         swiper-animate-effect="fadeInLeftBig"
-        swiper-animate-duration="1.2s"
+        swiper-animate-duration="1s"
+        swiper-animate-delay="0.2s"
       >
         毕设展览
       </h1>
       <div
         class="header-description-item subtitle-description-item ani"
         swiper-animate-effect="fadeInLeftBig"
-        swiper-animate-duration="1.4s"
+        swiper-animate-duration="1s"
+        swiper-animate-delay="0.4s"
       >
         <span class="header-description-sub-text">GRADUATION PROJECT SHOW</span>
       </div>
       <div
         class="header-description-item location-description-item ani"
         swiper-animate-effect="fadeInLeftBig"
-        swiper-animate-duration="1.6s"
+        swiper-animate-duration="1s"
+        swiper-animate-delay="0.6s"
       >
         <span class="header-description-icon header-location-icon">
           <img src="../../assets/Image/localtion.svg" alt="" />
@@ -45,7 +48,8 @@
       <div
         class="header-description-item people-description-item ani"
         swiper-animate-effect="fadeInLeftBig"
-        swiper-animate-duration="1.8s"
+        swiper-animate-duration="1s"
+        swiper-animate-delay="0.8s"
       >
         <span class="header-description-icon header-time-icon">
           <img src="../../assets/Image/time.svg" alt="" />

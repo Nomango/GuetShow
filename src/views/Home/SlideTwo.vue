@@ -4,7 +4,7 @@
       class="ani"
       title="优秀毕设"
       subTitle="Excellent work"
-      swiper-animate-effect="fadeInLeftBig"
+      swiper-animate-effect="bounceIn"
       swiper-animate-duration="1s"
     />
     <div
@@ -60,11 +60,19 @@
         </div>
       </div>
     </div>
-    <div class="check-all-btn-box">
+    <div class="check-all-btn-box ani"
+      swiper-animate-effect="bounceIn"
+      swiper-animate-duration="1s"
+      swiper-animate-delay="0.5s"
+    >
       <div class="check-all-btn" @click="handleCheckAllClick">
         <van-icon name="wap-nav" />
         <span class="check-all-btn-text">查看全部</span>
       </div>
+    </div>
+    <div class="footer">
+      <div class="footer-item">Powered by L.L.</div>
+      <div class="footer-item">Copyright (c) 2021-2022</div>
     </div>
   </section>
 </template>
@@ -148,6 +156,10 @@ export default class SlideTwo extends Vue {
 </script>
 
 <style lang="scss" scoped>
+.home-swiper-slide {
+  margin-top: 30px;
+}
+
 #project-swiper-container {
   width: 100%;
   perspective: 1200px;
@@ -155,7 +167,7 @@ export default class SlideTwo extends Vue {
 }
 
 .project-swiper-wrapper {
-  margin-top: 20px;
+  margin-top: 40px;
   margin-bottom: 20px;
   transform-style: preserve-3d;
 }
@@ -307,5 +319,13 @@ export default class SlideTwo extends Vue {
       margin-left: 10px;
     }
   }
+}
+
+.footer {
+  text-align: center;
+  position: absolute;
+  left: 50%;
+  bottom: 30px;
+  transform: translate(-50%,-50%);
 }
 </style>
