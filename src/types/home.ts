@@ -7,6 +7,8 @@ export interface ProjectItem {
   id?: number;
   name?: string;
   school: string;
+  major: string;
+  connect: string;
   level?: number;
   student?: ProjectStudent;
   teachers: number[];

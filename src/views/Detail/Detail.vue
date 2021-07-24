@@ -39,10 +39,26 @@
           <span class="article-info-text">{{ projectInfo.major }}</span>
         </div>
         <br />
-        <div class="article-info-item" v-if="projectInfo.connect">
-          <span class="article-info-text"
-            >联系方式：{{ projectInfo.connect }}</span
-          >
+        <div class="article-info-item" v-if="phoneNumber">
+          <span class="article-info-icon">
+            <img src="../../assets/Image/phone.svg" alt="" />
+          </span>
+          <span class="article-info-text">
+            <a :href="'tel:' + phoneNumber" v-if="phoneNumber">{{ phoneNumber }}</a>
+          </span>
+        </div>
+        <div class="article-info-item" v-if="studentEmail">
+          <span class="article-info-icon">
+            <img src="../../assets/Image/email.svg" alt="" />
+          </span>
+          <span class="article-info-text">
+            <a :href="'mailto:' + studentEmail" v-if="studentEmail">{{ studentEmail }}</a>
+          </span>
+        </div>
+        <div class="article-info-item" v-if="!phoneNumber && !studentEmail">
+          <span class="article-info-text">
+            联系方式：{{ projectInfo.connect }}
+          </span>
         </div>
       </div>
       <!-- <img class="article-cover" :src="projectInfo.cover" alt="" /> -->
@@ -112,6 +128,14 @@ export default class Detail extends Vue {
       return '三等奖'
     }
     return "";
+  }
+
+  get phoneNumber() {
+    return /^0?1[3|4|5|6|7|8][0-9]\d{8}$/.test(this.projectInfo.connect) ? this.projectInfo.connect : '';
+  }
+
+  get studentEmail() {
+    return /^([a-zA-Z]|[0-9])(\w|\-)+@[a-zA-Z0-9]+\.([a-zA-Z]{2,4})$/.test(this.projectInfo.connect) ? this.projectInfo.connect : '';
   }
 
   get teachers() {
@@ -218,6 +242,10 @@ export default class Detail extends Vue {
 
   .article-info-text {
     margin-left: 6px;
+
+    a {
+      color: #434343;
+    }
   }
 }
 
