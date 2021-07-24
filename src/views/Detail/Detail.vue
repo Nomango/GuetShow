@@ -23,17 +23,17 @@
         </div>
         <br />
         <div class="article-info-item">
-          <span class="article-info-icon">
+          <!-- <span class="article-info-icon">
             <img src="../../assets/Image/people.svg" alt="" />
-          </span>
+          </span> -->
           <span class="article-info-text">
             {{ studentName }}
           </span>
         </div>
         <div class="article-info-item" v-if="teachers">
-          <span class="article-info-icon">
+          <!-- <span class="article-info-icon">
             <img src="../../assets/Image/teacher.svg" alt="" />
-          </span>
+          </span> -->
           <span class="article-info-text">{{ teachers }}</span>
         </div>
         <br />
@@ -43,19 +43,19 @@
         </div>
         <br />
         <div class="article-info-item" v-if="phoneNumber">
-          <span class="article-info-icon">
+          <!-- <span class="article-info-icon">
             <img src="../../assets/Image/phone.svg" alt="" />
-          </span>
+          </span> -->
           <span class="article-info-text">
-            <a :href="'tel:' + phoneNumber" v-if="phoneNumber">{{ phoneNumber }}</a>
+            联系方式：<a :href="'tel:' + phoneNumber" v-if="phoneNumber">{{ phoneNumber }}</a>
           </span>
         </div>
         <div class="article-info-item" v-if="studentEmail">
-          <span class="article-info-icon">
+          <!-- <span class="article-info-icon">
             <img src="../../assets/Image/email.svg" alt="" />
-          </span>
+          </span> -->
           <span class="article-info-text">
-            <a :href="'mailto:' + studentEmail" v-if="studentEmail">{{ studentEmail }}</a>
+            联系方式：<a :href="'mailto:' + studentEmail" v-if="studentEmail">{{ studentEmail }}</a>
           </span>
         </div>
         <div class="article-info-item" v-if="!phoneNumber && !studentEmail">
@@ -118,7 +118,7 @@ export default class Detail extends Vue {
   loading = true;
 
   get studentName() {
-    return (this.projectInfo.student && this.projectInfo.student.name) || "";
+    return "学生：" + (this.projectInfo.student && this.projectInfo.student.name) || "";
   }
 
   get level() {

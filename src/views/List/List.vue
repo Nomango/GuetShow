@@ -139,7 +139,8 @@ import { debounce } from "@/utils/tools";
         const totalCount = projectResData?.total_count || 0;
         const listData = projectResData?.works || [];
 
-        vm.temp[SELECTTYPE.school] = schoolResData || [];
+        vm.temp[SELECTTYPE.school].origin = schoolResData || [];
+        vm.temp[SELECTTYPE.school].target = schoolResData || [];
 
         vm.temp[SELECTTYPE.mentor].origin = mentorResData?.teachers || [];
         vm.temp[SELECTTYPE.mentor].target = (mentorResData?.teachers || []).map(
@@ -177,7 +178,10 @@ export default class List extends Vue {
   };
 
   temp = {
-    [SELECTTYPE.school]: [],
+    [SELECTTYPE.school]: {
+      origin: [],
+      target: []
+    },
     [SELECTTYPE.mentor]: {
       origin: [],
       target: []
