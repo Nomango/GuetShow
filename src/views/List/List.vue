@@ -1,41 +1,37 @@
 <template>
   <div class="list-wrapper">
-    <van-nav-bar
-      title="毕设SHOW"
-      fixed
-      left-arrow
-      border
-      @click-left="onClickLeft"
-    />
+    <div class="list-header-left" @click="handleonClickLeft">
+      <i class="van-icon van-icon-arrow-left van-nav-bar__arrow"></i>
+    </div>
+    <Title title="毕设展览" subTitle="Online Show" />
     <div class="list-content">
-      <div class="list-select-group">
-        <Select
-          v-model="listQuery.school"
-          placeholder="请选择学院"
-          :active="activeType === 1"
-          @picker-show="handlePickerShow(1)"
-          @select-close="handleSelectClose(1)"
-        />
-        <Select
-          v-model="listQuery.mentor"
-          placeholder="请选择导师"
-          :active="activeType === 2"
-          @picker-show="handlePickerShow(2)"
-          @select-close="handleSelectClose(2)"
-        />
-        <Select
-          v-model="listQuery.level"
-          placeholder="请选择奖项"
-          :active="activeType === 3"
-          @picker-show="handlePickerShow(3)"
-          @select-close="handleSelectClose(3)"
+      <div class="list-form">
+        <div class="list-select-group">
+          <Select
+            v-model="listQuery.mentor"
+            placeholder="请选择导师"
+            :active="activeType === 2"
+            @picker-show="handlePickerShow(2)"
+            @select-close="handleSelectClose(2)"
+          />
+          <Select
+            v-model="listQuery.level"
+            placeholder="选择奖项"
+            :active="activeType === 3"
+            @picker-show="handlePickerShow(3)"
+            @select-close="handleSelectClose(3)"
+          />
+        </div>
+        <Input
+          v-model="listQuery.query"
+          placeholder="搜索毕设名称 / 学生名称"
         />
       </div>
       <GList
         v-show="list.length"
         v-model="loading"
         :finished="finished"
-        finished-text="我也是有底线的～"
+        finished-text="没有更多了～"
         @load="onLoad"
       >
         <transition-group
@@ -52,33 +48,29 @@
           >
             <div class="project-image-wrap">
               <img v-lazy="item.cover" class="project-image" />
+              <img
+                v-if="LevelImage[item.level]"
+                :src="LevelImage[item.level]"
+                alt=""
+                class="project-level-image"
+              />
             </div>
-            <div class="project-content">
-              <h2 class="project-title">{{ item.name }}</h2>
+            <div class="project-content" @click="handleItemClick(item.id)">
+              <h2 class="project-title u-ellipsis">{{ item.name }}</h2>
               <div class="project-info">
                 <div class="project-info-image">
                   <img src="../../assets/Image/people.svg" alt="" />
+                  <!-- <img src="" alt="" /> -->
                 </div>
-                <div class="project-info-right">
-                  <span class="project-owner-name">
-                    {{ item.student && item.student.name }}
-                  </span>
-                  <br />
-                  <span class="project-school">
-                    {{ item.school }}
-                  </span>
-                </div>
+                <span class="project-owner-name">
+                  {{ item.student && item.student.name }}
+                </span>
+                <span class="project-school">
+                  {{ item.school }}
+                </span>
               </div>
-              <div class="project-action">
-                <van-button
-                  round
-                  plain
-                  hairline
-                  type="info"
-                  @click="handleToDetail(item.id)"
-                >
-                  进去瞧瞧
-                </van-button>
+              <div class="project-description u-mutiple-ellipsis">
+                <span>{{ item.brief }}</span>
               </div>
             </div>
           </div>
@@ -110,15 +102,18 @@
 <script lang="ts">
 import { Component, Vue, Watch } from "vue-property-decorator";
 
-import { Select, GList } from "@/components";
+import { Select, GList, Input, Title } from "@/components";
 import { fetchWorks, fetchSchools, fetchMentors } from "@/api/list";
 import { SELECTTYPE, defaultWorksConfig, defaultLevel } from "@/libs/constant";
 import { ProjectItem, TeacherItem } from "@/types/home";
+import { debounce } from "@/utils/tools";
 
 @Component({
   components: {
     Select,
-    GList
+    GList,
+    Input,
+    Title
   },
 
   beforeRouteEnter(to, from, next) {
@@ -143,7 +138,6 @@ import { ProjectItem, TeacherItem } from "@/types/home";
         const totalCount = projectResData?.total_count || 0;
         const listData = projectResData?.works || [];
 
-        vm.temp[SELECTTYPE.school].target = schoolResData || [];
         vm.temp[SELECTTYPE.mentor].origin = mentorResData?.teachers || [];
         vm.temp[SELECTTYPE.mentor].target = (mentorResData?.teachers || []).map(
           (item: TeacherItem) => {
@@ -164,18 +158,21 @@ import { ProjectItem, TeacherItem } from "@/types/home";
   }
 })
 export default class List extends Vue {
+  LevelImage = {
+    1: require("../../assets/Image/ranking-1.png"),
+    2: require("../../assets/Image/ranking-1.png"),
+    3: require("../../assets/Image/ranking-1.png")
+  };
+
   activeType: SELECTTYPE = SELECTTYPE.default;
 
   listQuery = {
-    school: "",
+    query: "",
     mentor: "",
     level: ""
   };
 
   temp = {
-    [SELECTTYPE.school]: {
-      target: []
-    },
     [SELECTTYPE.mentor]: {
       origin: [],
       target: []
@@ -191,6 +188,8 @@ export default class List extends Vue {
   loading = true;
   totalCount = 0;
   finished = false;
+
+  debounceGetWorks = debounce(this.handleGetWorks, 300);
 
   onLoad() {
     if (this.finished) {
@@ -251,7 +250,7 @@ export default class List extends Vue {
     }
   }
 
-  handleToDetail(id: string) {
+  handleItemClick(id: string) {
     if (!id) {
       return;
     }
@@ -316,9 +315,13 @@ export default class List extends Vue {
     }, delay);
   }
 
+  handleonClickLeft() {
+    this.$router.go(-1);
+  }
+
   @Watch("listQuery", { deep: true })
   activeTypeChange(val: any, oldVal: any) {
-    this.handleGetWorks();
+    this.debounceGetWorks();
   }
 }
 </script>
@@ -340,11 +343,26 @@ export default class List extends Vue {
 </style>
 <style lang="scss" scoped>
 .list-wrapper {
-  position: absolute;
+  position: relative;
   width: 100%;
   height: 100%;
-  padding-top: 46px;
   background-color: #f5f9ff;
+}
+
+.list-header-left {
+  position: absolute;
+  top: 8px;
+  left: 8px;
+  display: flex;
+  align-items: center;
+  padding: 0 8px;
+  font-size: 12px;
+  cursor: pointer;
+  height: 40px;
+
+  .van-icon {
+    color: #1989fa;
+  }
 }
 
 .list-bg {
@@ -365,7 +383,7 @@ export default class List extends Vue {
   display: flex;
   flex-direction: column;
   position: relative;
-  height: 100%;
+  height: calc(100% - 101px);
   margin-top: 15px;
 }
 
@@ -373,16 +391,23 @@ export default class List extends Vue {
   flex: 1;
   overflow: auto;
   margin-top: 20px;
-  padding: 0px 32px 16px;
+  padding: 0px 12px 16px;
+}
+
+.list-form {
+  padding: 0 30px;
+
+  .guet-input {
+    margin-top: 12px;
+  }
 }
 
 .list-select-group {
   display: flex;
   justify-content: space-around;
-  padding: 0px 16px;
 
   .guet-select {
-    width: 110.34px;
+    flex: 1;
 
     &:not(:last-of-type) {
       margin-right: 6px;
@@ -391,21 +416,36 @@ export default class List extends Vue {
 }
 
 .project-item {
+  display: flex;
   width: 100%;
-  margin-bottom: 16px;
   background-color: #fff;
+  padding: 12px;
+  box-sizing: border-box;
   box-shadow: 0 8px 12px #ebedf0;
   border-radius: 12px;
 
+  &:not(:last-of-type) {
+    margin-bottom: 20px;
+  }
+
   .project-image-wrap {
-    width: 100%;
-    height: 200px;
+    position: relative;
+    width: 100px;
+    height: 100px;
+    border-radius: 12px;
+
+    .project-level-image {
+      position: absolute;
+      left: 10px;
+      top: 0;
+      width: 20px;
+    }
 
     .project-image {
       width: 100%;
       height: 100%;
       object-fit: cover;
-      border-radius: 12px 12px 0 0;
+      border-radius: inherit;
     }
   }
 }
@@ -429,53 +469,46 @@ export default class List extends Vue {
 }
 
 .project-content {
-  padding: 12px 30px 10px;
+  width: 0; // 显示省略号
+  flex: 1;
+  margin-left: 8px;
   text-align: center;
 
   .project-title {
     color: #14232a;
-    font-size: 18px;
+    font-size: 16px;
     font-weight: 500;
     line-height: 20px;
   }
 }
 
 .project-info {
-  display: inline-flex;
-  justify-content: center;
-  font-size: 12px;
-  color: #4f7181;
-  margin-top: 12px;
+  display: flex;
+  align-items: center;
+  margin-top: 10px;
 
-  .project-info-right {
-    text-align: left;
-    margin-left: 6px;
-  }
-
-  .project-owner-name,
-  .project-school {
-    transform: scale(0.0667);
+  .project-owner-name {
+    margin-left: 3px;
   }
 
   .project-school {
-    margin-top: 10px;
+    margin-left: 10px;
   }
 }
 
+.project-description {
+  margin-top: 10px;
+  text-align: justify;
+}
+
 .project-info-image {
+  position: relative;
   display: flex;
   align-items: center;
-  width: 25px;
-  position: relative;
-  top: 2px;
+  width: 15px;
 
   img {
     width: 100%;
   }
-}
-
-.project-action {
-  width: 100%;
-  text-align: center;
 }
 </style>

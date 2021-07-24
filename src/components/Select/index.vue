@@ -52,7 +52,7 @@ export default class Select extends Vue {
   position: relative;
   padding: 5px 20px 5px 10px;
   font-size: 14px;
-  line-height: 24px;
+  line-height: 18px;
   color: #666;
   border-radius: 4px;
   background-color: #fff;

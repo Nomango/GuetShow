@@ -79,10 +79,10 @@ import { ProjectItem, TeacherItem } from "@/types/home";
     Promise.allSettled([
       fetchMentors(),
       getWorkListById({
-        id: Number(to.params.id),
-      }),
+        id: Number(to.params.id)
+      })
     ])
-      .then((res) => {
+      .then(res => {
         const [{ value: mentorVal }, { value: workVal }] = res as any;
 
         const { data: mentorData } = mentorVal || {};
@@ -100,14 +100,14 @@ import { ProjectItem, TeacherItem } from "@/types/home";
           vm.loading = false;
           vm.projectInfo = {
             ...(workData || {}),
-            teachers: teachers.filter(Boolean),
+            teachers: teachers.filter(Boolean)
           };
         });
       })
       .catch(() => {
         next();
       });
-  },
+  }
 })
 export default class Detail extends Vue {
   projectInfo: ProjectItem = {} as ProjectItem;
@@ -120,12 +120,12 @@ export default class Detail extends Vue {
 
   get level() {
     switch (this.projectInfo.level) {
-    case 1:
-      return '一等奖'
-    case 2:
-      return '二等奖'
-    case 3:
-      return '三等奖'
+      case 1:
+        return "一等奖";
+      case 2:
+        return "二等奖";
+      case 3:
+        return "三等奖";
     }
     return "";
   }
@@ -180,7 +180,7 @@ export default class Detail extends Vue {
 
 .detail-header-left {
   position: absolute;
-  top: -5px;
+  top: -8px;
   left: 8px;
   display: flex;
   align-items: center;
@@ -192,6 +192,10 @@ export default class Detail extends Vue {
   .van-icon {
     color: #1989fa;
   }
+}
+
+.detail-main {
+  padding-bottom: 16px;
 }
 
 .detail-header-right {
@@ -256,10 +260,6 @@ export default class Detail extends Vue {
   img {
     width: 100%;
   }
-}
-
-.detail-main {
-  height: 100%;
 }
 
 .markdown-body {

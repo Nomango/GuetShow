@@ -15,12 +15,11 @@ export default {
   },
   watch: {
     $route(to, from) {
-      console.log("asdfasd", to);
       const routerDeep = ["/list", "/detail"];
 
       const toDepth = routerDeep.indexOf(to.path);
       const fromDepth = routerDeep.indexOf(from.path);
-      console.log(toDepth, fromDepth);
+
       this.transitionName = toDepth > fromDepth ? "fold-left" : "fold-right";
     }
   }

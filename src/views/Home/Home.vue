@@ -1,63 +1,26 @@
 <template>
   <div class="home-container">
-    <HomeImage />
-    <main class="home-main">
-      <HeaderCom />
-      <div class="divider-wrap">
-        <van-divider content-position="center">
-          优秀毕设
-        </van-divider>
-      </div>
-
-      <div v-if="list.length > 0" class="swiper-container">
-        <div class="swiper-wrapper">
-          <div class="swiper-slide" v-for="item in list" :key="item.id">
-            <div class="project-item">
-              <div class="project-image-wrap">
-                <img v-lazy="item.cover" class="project-image" />
-              </div>
-              <div class="project-content">
-                <h2 class="project-title">{{ item.name }}</h2>
-                <div class="project-info">
-                  <div class="project-info-image">
-                    <img src="../../assets/Image/people.svg" alt="" />
-                  </div>
-                  <div class="project-info-right">
-                    <span class="project-owner-name">
-                      {{ item.student && item.student.name }}
-                    </span>
-                    <br />
-                    <span class="project-school">
-                      {{ item.school }}
-                    </span>
-                  </div>
-                </div>
-                <van-button
-                  round
-                  plain
-                  hairline
-                  type="info"
-                  @click="handleToDetail(item.id)"
-                >
-                  进去瞧瞧
-                </van-button>
-              </div>
-            </div>
-          </div>
+    <template v-if="!loading">
+      <div
+        class="swiper-container home-swiper-container"
+        id="home-swiper-container"
+      >
+        <div class="swiper-wrapper home-swiper-wrapper">
+          <SlideOne />
+          <SlideTwo :list="list" />
         </div>
       </div>
-      <div class="check-all-wrap">
-        <div class="check-all-btn" @click="handleCheckAllClick">
-          查看全部>>
+      <div class="home-arrow" v-show="arrowVisible">
+        <div class="home-arrow-box">
+          <img src="../../assets/Image/next.svg" class="home-arrow-img" />
+          <img src="../../assets/Image/next.svg" class="home-arrow-img" />
         </div>
       </div>
-    </main>
-    <footer class="home-footer">
-      <div class="copyright">
-        <!-- <p class="copyright-item">Powered by Nomango</p> -->
-        <p class="copyright-item">Copyright (c) 2021-2022</p>
-      </div>
-    </footer>
+      <HomeImage class="home-background" />
+    </template>
+    <div class="home-loading" v-else>
+      <van-loading color="#0094ff" size="24px" vertical>加载中...</van-loading>
+    </div>
   </div>
 </template>
 
@@ -66,14 +29,18 @@ import { Component, Vue, Prop, Watch } from "vue-property-decorator";
 import Swiper from "swiper";
 import "swiper/swiper.min.css";
 
-import HeaderCom from "./Header.vue";
-import HomeImage from "./Image.vue";
+import SlideOne from "./SlideOne.vue";
+import SlideTwo from "./SlideTwo.vue";
+
 import { fetchRecommend } from "@/api/home";
 import { ProjectItem } from "@/types/home";
+import HomeImage from "./Image.vue";
+import * as SwiperAni from "@/utils/swiperAnimate";
 
 @Component({
   components: {
-    HeaderCom,
+    SlideOne,
+    SlideTwo,
     HomeImage
   },
   beforeRouteEnter: async (to, form, next) => {
@@ -84,7 +51,7 @@ import { ProjectItem } from "@/types/home";
       const { data } = res || {};
 
       next((vm: any) => {
-        vm.loading = true;
+        vm.loading = false;
         vm.list = data;
       });
     } catch (error) {
@@ -96,60 +63,73 @@ export default class Home extends Vue {
   @Prop() show!: boolean;
 
   loading = true;
+  arrowVisible = true;
   list: ProjectItem[] = [];
 
-  handleCheckAllClick() {
-    this.$router.push({
-      name: "List"
-    });
-  }
-
-  handleToDetail(id: string) {
-    this.$router.push({
-      name: "Detail",
-      params: {
-        id
-      }
-    });
-  }
-
-  init() {
-    new Swiper(".swiper-container", {
-      slidesPerView: "auto",
+  handleInitHomeSwiper() {
+    const vm = this as any;
+    new Swiper("#home-swiper-container", {
+      direction: "vertical",
       watchSlidesProgress: true,
-      centeredSlides: true,
+      mousewheel: true,
       on: {
+        init: function(swiper) {
+          SwiperAni.swiperAnimateCache(); // 隐藏动画元素
+          SwiperAni.swiperAnimate(this); // 初始化完成开始动画
+
+          swiper.slides
+            .eq(swiper.activeIndex)
+            .find(".ani")
+            .removeClass("ani"); // 动画只展现一次，去除ani类名
+        },
+        slideChangeTransitionEnd: function(swiper: Swiper) {
+          SwiperAni.swiperAnimate(this); // 每个slide切换结束时也运行当前slide动画
+
+          swiper.slides
+            .eq(swiper.activeIndex)
+            .find(".ani")
+            .removeClass("ani"); // 动画只展现一次，去除ani类名
+        },
+        slideChange: function(swiper: Swiper) {
+          if (swiper.isEnd) {
+            vm.arrowVisible = false;
+          } else {
+            vm.arrowVisible = true;
+          }
+        },
         progress: function(this: any, swiper: Swiper, progress1: number) {
           const len = swiper.slides.length;
           for (var i = 0; i < len; i++) {
             const slide = swiper.slides[i] as any;
             const progress = slide.progress;
 
+            const translate = (progress * swiper.height) / 3;
+            const scale = 1 - Math.min(Math.abs(progress * 0.5), 1);
+            const opacity = 1 - Math.min(Math.abs(progress / 2), 0.5);
+
             const style = slide.style;
-            style.transform = style.MsTransform = style.msTransform = style.MozTransform = style.OTransform = style.transform =
-              "translate3d(0px, 0," + -Math.abs(progress * 250) + "px)";
+            style.opacity = opacity;
+            style.transform = style.MsTransform = style.msTransform = style.MozTransform = style.OTransform = style.transform = `translate3d(0, ${translate}px, -${translate}px) scaleY(${scale})`;
           }
         },
         setTransition: function(this: any, swiper: Swiper, transition: number) {
           const slides = swiper.slides;
           for (let i = 0, len = slides.length; i < len; i++) {
             const slide = slides.eq(i);
-            slide.find(".project-item").transition(transition);
+            slide.find(".home-swiper-slide").transition(transition);
           }
         }
       }
     });
   }
 
-  mounted() {
-    this.init();
-  }
-
-  @Watch("list")
-  listChange() {
-    this.$nextTick(() => {
-      this.init();
-    });
+  @Watch("loading")
+  loadingChange(val: boolean, oldVal: boolean) {
+    if (!val) {
+      this.$nextTick(() => {
+        this.handleInitHomeSwiper();
+      });
+    }
   }
 }
 </script>
@@ -159,200 +139,78 @@ export default class Home extends Vue {
   width: 100%;
   height: 100%;
   color: #434343;
-  overflow: auto;
-  padding-bottom: 20px;
   background-color: #f5f9ff;
 }
 
-.home-main {
+.home-swiper-container {
   position: relative;
+  width: 100%;
+  height: 100%;
   z-index: 2;
 }
 
-.divider-wrap {
-  margin-top: 120px;
-  display: flex;
-  justify-content: center;
-}
-
-.divider-wrap ::v-deep .van-divider {
-  margin: auto;
-  font-size: 16px;
-  font-weight: 500;
-  color: #434343;
-  border-color: #434343;
-
-  &::before {
-    margin-right: 10px;
-  }
-
-  &::after {
-    margin-left: 10px;
-  }
-
-  &::before,
-  &::after {
-    display: inline-block;
-    flex: none;
-    width: 20px;
-    border-width: 4px 0 0 0;
-  }
-}
-
-.swiper-container {
+.home-swiper-slide {
   width: 100%;
-  perspective: 1200px;
-  /* height: 385px; */
-}
-
-.swiper-wrapper {
-  margin-top: 20px;
-  margin-bottom: 20px;
-  transform-style: preserve-3d;
-}
-
-.swiper-slide {
-  width: 84.5%;
-  min-height: 270px;
-  transform-style: preserve-3d;
+  height: 100%;
   transition: transform 0.3s;
-
-  &.last-slide {
-    display: flex;
-    align-items: center;
-    width: 95px;
-    color: #fff;
-
-    .more-icon {
-      display: inline-block;
-      width: 25px;
-      height: 25px;
-
-      img {
-        width: 100%;
-      }
-    }
-
-    .more-text {
-      display: inline-block;
-      width: 21px;
-      font-size: 16px;
-      margin-left: 10px;
-      line-height: 1.5;
-    }
-  }
 }
 
-.project-item {
-  display: block;
-  width: 84.5%;
-  margin: 0 auto;
-  border-radius: 12px;
-  background-color: #fff;
-  box-shadow: 0 8px 12px #ebedf0;
+.home-arrow {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0px;
+  width: 23.4375px;
+  margin: auto;
+  animation: start 1.5s infinite ease-in-out;
+  z-index: 999;
 }
 
-.project-image-wrap {
-  width: 100%;
-  height: 200px;
-  margin-top: 17px;
+.home-arrow-box {
+  position: relative;
+  width: 20px;
+  height: 20px;
+  transform: rotate(-90deg);
 
-  .project-image {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    border-radius: 12px 12px 0 0;
-  }
-}
-
-.project-content ::v-deep {
-  .van-button {
-    width: 168px;
-    height: 31px;
-    line-height: 31px;
-    background: #ffffff;
+  .home-arrow-img {
+    position: absolute;
+    top: 0;
+    left: 0;
+    opacity: 0.8;
+    width: inherit;
     color: #434343;
-    border-radius: 15px;
-    margin-top: 12px;
-    box-shadow: 0 2px 12px 0 rgb(0 0 0 / 10%);
-    border: none;
-    &::before,
-    &::after {
-      display: none;
+
+    &:not(:first-of-type) {
+      left: 7px;
+      opacity: 0.4;
     }
   }
 }
 
-.project-content {
-  padding: 12px 30px 10px;
-  text-align: center;
-
-  .project-title {
-    color: #14232a;
-    font-size: 18px;
-    font-weight: 500;
-    line-height: 20px;
-  }
-}
-
-.project-info {
-  display: inline-flex;
-  justify-content: center;
-  font-size: 12px;
-  color: #4f7181;
-  margin-top: 12px;
-
-  .project-info-right {
-    text-align: left;
-    margin-left: 6px;
-  }
-
-  .project-owner-name,
-  .project-school {
-    transform: scale(0.0667);
-  }
-
-  .project-school {
-    margin-top: 10px;
-  }
-}
-
-.project-info-image {
+.home-loading {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
   display: flex;
   align-items: center;
-  width: 25px;
-  position: relative;
-  top: 2px;
+  justify-content: center;
+}
 
-  img {
-    width: 100%;
+@keyframes start {
+  0%,
+  30% {
+    opacity: 0;
+    transform: translate(0, 10px);
   }
-}
-
-.check-all-wrap {
-  text-align: center;
-}
-
-.check-all-btn {
-  display: inline-block;
-  font-size: 12px;
-  height: 30px;
-  text-align: center;
-  color: #323232;
-  text-decoration: underline;
-}
-
-.home-footer {
-  text-align: center;
-  font-size: 12px;
-  padding-bottom: 10px;
-
-  .copyright-item {
-    transform: scale(0.667);
-
-    &:not(:last-of-type) {
-      margin-top: 15px;
-    }
+  60% {
+    opacity: 1;
+    transform: translate(0, 0);
+  }
+  100% {
+    opacity: 0;
+    transform: translate(0, -8px);
   }
 }
 </style>

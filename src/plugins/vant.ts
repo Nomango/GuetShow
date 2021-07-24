@@ -8,16 +8,18 @@ import {
   Popup,
   Picker,
   Empty,
-  Lazyload
+  Lazyload,
+  Loading
 } from "vant";
 import "vant/lib/index.css";
 
 // 注册时可以配置额外的选项
 Vue.use(Lazyload, {
-  // loading: '',
+  loading: require("../assets/Image/placeholder.png")
   // error
 });
 
+Vue.use(Loading);
 Vue.use(Empty);
 Vue.use(Button);
 Vue.use(NavBar);

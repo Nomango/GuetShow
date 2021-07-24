@@ -105,4 +105,9 @@ export default class List extends Vue {
   line-height: 50px;
   text-align: center;
 }
+
+.guet-finished-text {
+  font-size: 12px;
+  color: #ccc;
+}
 </style>
