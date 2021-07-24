@@ -70,6 +70,10 @@
         <span class="check-all-btn-text">查看全部</span>
       </div>
     </div>
+    <div class="footer">
+      <div class="footer-item">Powered by L.L.</div>
+      <div class="footer-item">Copyright (c) 2021-2022</div>
+    </div>
   </section>
 </template>
 
@@ -152,6 +156,10 @@ export default class SlideTwo extends Vue {
 </script>
 
 <style lang="scss" scoped>
+.home-swiper-slide {
+  margin-top: 30px;
+}
+
 #project-swiper-container {
   width: 100%;
   perspective: 1200px;
@@ -311,5 +319,13 @@ export default class SlideTwo extends Vue {
       margin-left: 10px;
     }
   }
+}
+
+.footer {
+  text-align: center;
+  position: absolute;
+  left: 50%;
+  bottom: 30px;
+  transform: translate(-50%,-50%);
 }
 </style>

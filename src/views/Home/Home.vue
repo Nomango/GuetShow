@@ -16,7 +16,7 @@
           <img src="../../assets/Image/next.svg" class="home-arrow-img" />
         </div>
       </div>
-      <HomeImage class="home-background" />
+      <HomeImage class="home-background" :style='backgroundStyle' />
     </template>
     <div class="home-loading" v-else>
       <van-loading color="#0094ff" size="24px" vertical>加载中...</van-loading>
@@ -65,6 +65,7 @@ export default class Home extends Vue {
   loading = true;
   arrowVisible = true;
   list: ProjectItem[] = [];
+  backgroundStyle: any = {};
 
   handleInitHomeSwiper() {
     const vm = this as any;
@@ -92,8 +93,10 @@ export default class Home extends Vue {
         },
         slideChange: function(swiper: Swiper) {
           if (swiper.isEnd) {
+            vm.backgroundStyle['margin-top'] = '-80px';
             vm.arrowVisible = false;
           } else {
+            vm.backgroundStyle['margin-top'] = '60px';
             vm.arrowVisible = true;
           }
         },

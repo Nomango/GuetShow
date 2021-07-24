@@ -72,7 +72,7 @@ export default class yourComponent extends Vue {
 
       style: {
         right: "53px",
-        top: "137px"
+        top: "189px"
       },
       key: "guetTriangle"
     },
@@ -80,7 +80,7 @@ export default class yourComponent extends Vue {
       class: "guet-circle",
       style: {
         right: "93px",
-        top: "272px"
+        bottom: "320px"
       },
       key: "guetCircle"
     },
@@ -88,7 +88,7 @@ export default class yourComponent extends Vue {
       class: "guet-square",
       style: {
         right: "20px",
-        top: "354px"
+        bottom: "240px"
       },
       key: "guetSquare"
     },
@@ -96,7 +96,7 @@ export default class yourComponent extends Vue {
       class: "guet-triangle",
       style: {
         left: "155px",
-        top: "389px"
+        bottom: "190px"
       },
       key: "guetTriangle"
     },
@@ -104,18 +104,36 @@ export default class yourComponent extends Vue {
       class: "guet-circle",
       style: {
         left: "20px",
-        top: "422px"
+        bottom: "80px"
       },
       key: "guetCircle"
     }
   ];
+
+  created() {
+    // const columns = this.list.length / 2;
+    // const blockWidth = window.screen.width / columns / 2;
+
+    this.list.forEach((val, idx, array) => {
+      // const column = Math.floor(idx / 2);
+      // if (idx % 2) {
+      //   // 下半区
+      //   val.style.bottom = `${Math.random() * window.screen.height * (0.2 + column * 0.05) + 80}px`
+      // } else {
+      //   // 上半区
+      //   val.style.top = `${Math.random() * window.screen.height * (0.1 + column * 0.05)}px`
+      // }
+      // val.style.left = `${(column * 2 + 1) * blockWidth}px`
+      val.style.transform = `scale(0.5) rotate(${Math.random() * 360}deg)`
+    });
+  }
 }
 </script>
 
 <style lang="scss">
 .guet-icon {
-  --path: #2f354575;
-  --dot: #5628ee95;
+  --path: #666666;
+  --dot: #5628ee;
   --duration: 3s;
   width: 44px;
   height: 44px;
@@ -244,20 +262,37 @@ export default class yourComponent extends Vue {
     stroke-dashoffset: 275;
   }
 }
+
+@keyframes start {
+  0%,
+  30% {
+    opacity: 0;
+    transform: translate(0, 10px);
+  }
+  60% {
+    opacity: 1;
+    transform: translate(0, 0);
+  }
+  100% {
+    opacity: 0;
+    transform: translate(0, -8px);
+  }
+}
 </style>
 <style lang="scss" scoped>
 .guet-background {
-  margin-top: 100px;
+  margin-top: 60px;
   position: absolute;
   left: 0;
   top: 0;
   width: 100%;
   height: 100%;
   z-index: 1;
+  transition: margin-top 1s ease-in-out;
 
   .guet-icon-box {
     position: absolute;
-    transform: scale(0.4);
+    transform: scale(0.5);
   }
 }
 </style>
