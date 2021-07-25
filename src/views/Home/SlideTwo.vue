@@ -60,7 +60,8 @@
         </div>
       </div>
     </div>
-    <div class="check-all-btn-box ani"
+    <div
+      class="check-all-btn-box ani"
       swiper-animate-effect="bounceIn"
       swiper-animate-duration="1s"
     >
@@ -155,10 +156,6 @@ export default class SlideTwo extends Vue {
 </script>
 
 <style lang="scss" scoped>
-.home-swiper-slide {
-  margin-top: 30px;
-}
-
 #project-swiper-container {
   width: 100%;
   perspective: 1200px;
@@ -321,10 +318,12 @@ export default class SlideTwo extends Vue {
 }
 
 .footer {
-  text-align: center;
   position: absolute;
   left: 50%;
-  bottom: 30px;
-  transform: translate(-50%,-50%);
+  bottom: 9px;
+  font-size: 12px;
+  text-align: center;
+  color: #aaa;
+  transform: translate(-50%, 0) scale(0.667);
 }
 </style>

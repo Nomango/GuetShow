@@ -20,7 +20,7 @@ export default class Title extends Vue {
 <style lang="scss" scoped>
 .guet-title-wrap {
   text-align: center;
-  padding-top: 50px;
+  padding-top: 45px;
 
   .sub-divider {
     display: inline-block;

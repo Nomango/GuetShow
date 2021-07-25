@@ -1,10 +1,8 @@
 <template>
   <div class="guet-list" ref="root">
     <slot />
-    <div class="guet-loading" v-if="loading && !finished">
-      <Loading class="guet-loading-icon">
-        {{ loadingText || "loading" }}
-      </Loading>
+    <div class="guet-loading-box" v-if="loading && !finished">
+      <Loading class="guet-loading-icon" text="加载中..." />
     </div>
     <div class="guet-finished" v-if="!loading && finished">
       <span class="guet-finished-text">{{ finishedText }}</span>
@@ -19,7 +17,7 @@
 import { Component, Vue, Prop, Watch } from "vue-property-decorator";
 
 import Loading from "../Loading/index.vue";
-import { getScrollParent } from "@/utils/dom";
+import { throttle } from "@/utils/tools";
 
 @Component({
   components: {
@@ -27,55 +25,61 @@ import { getScrollParent } from "@/utils/dom";
   }
 })
 export default class List extends Vue {
-  @Prop() value!: boolean;
   @Prop() error!: boolean;
   @Prop() loading!: boolean;
   @Prop() finished!: boolean;
   @Prop() errorText!: string;
   @Prop() loadingText!: string;
   @Prop() finishedText!: string;
-  @Prop({ default: 300, type: [String, Number] }) offset!: number | string;
+  @Prop({ default: 200, type: [String, Number] }) offset!: number | string;
 
   scrollParent: Element | null = null;
+  throttleCheck = throttle(this.check, 100);
 
   init() {
     // eslint-disable-next-line dot-notation
     const el = this.$refs["root"] as Element;
-    const scrollParent = getScrollParent(el);
 
-    if (scrollParent) {
-      this.scrollParent = scrollParent as Element;
-      scrollParent.addEventListener("scroll", this.check);
+    if (el) {
+      this.scrollParent = el;
+      el.addEventListener("scroll", this.throttleCheck);
     }
   }
 
   check() {
+    // 设置节流函数
+
     this.$nextTick(() => {
       if (this.loading || this.finished || this.error) {
         return;
       }
-
+      console.log("----- 执行了多少次了", this.loading);
       const offset = this.offset;
-      const scrollParentRect = this.scrollParent?.getBoundingClientRect();
+      const scrollParent = this.scrollParent;
 
-      if (!scrollParentRect?.height) {
+      if (!scrollParent) {
         return;
       }
 
       let isReachEdge = false;
+      const bottom =
+        scrollParent.scrollHeight -
+        (scrollParent.clientHeight + scrollParent.scrollTop);
 
-      isReachEdge = 0 - scrollParentRect.bottom <= offset;
+      isReachEdge = bottom <= offset;
 
       if (isReachEdge) {
         this.$emit("update:loading", true);
         this.$emit("load");
+
+        console.log("------ aaaa -------");
       }
     });
   }
 
   removeInit() {
     if (this.scrollParent) {
-      this.scrollParent.removeEventListener("scroll", this.check);
+      this.scrollParent.removeEventListener("scroll", this.throttleCheck);
     }
   }
 
@@ -83,7 +87,7 @@ export default class List extends Vue {
   @Watch("finished")
   @Watch("error")
   statusChange() {
-    this.check();
+    this.throttleCheck();
   }
 
   mounted() {
@@ -109,5 +113,9 @@ export default class List extends Vue {
 .guet-finished-text {
   font-size: 12px;
   color: #ccc;
+}
+
+.guet-loading-box {
+  margin-top: 5px;
 }
 </style>

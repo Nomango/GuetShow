@@ -29,7 +29,7 @@
       </div>
       <GList
         v-show="list.length"
-        v-model="loading"
+        :loading.sync="loading"
         :finished="finished"
         finished-text="没有更多了～"
         @load="onLoad"
@@ -107,7 +107,7 @@ import { Select, GList, Input, Title } from "@/components";
 import { fetchWorks, fetchSchools, fetchMentors } from "@/api/list";
 import { SELECTTYPE, defaultWorksConfig, defaultLevel } from "@/libs/constant";
 import { ProjectItem, TeacherItem } from "@/types/home";
-import { debounce } from "@/utils/tools";
+import { debounce, throttle } from "@/utils/tools";
 
 @Component({
   components: {
@@ -198,14 +198,23 @@ export default class List extends Vue {
   totalCount = 0;
   finished = false;
 
-  debounceGetWorks = debounce(this.handleGetWorks, 300);
+  debounceGetWorks = debounce(() => {
+    this.handleGetWorks(true);
+  }, 300);
+
+  throttleGetWorks = throttle(this.handleLoadMore, 100);
 
   onLoad() {
     if (this.finished) {
       return;
     }
+    this.throttleGetWorks();
+  }
 
-    this.page = this.page++;
+  handleLoadMore() {
+    const page: number = this.page + 1;
+    this.page = page;
+
     this.handleGetWorks();
   }
 
@@ -242,19 +251,25 @@ export default class List extends Vue {
     };
   }
 
-  async handleGetWorks() {
-    this.loading = true;
+  async handleGetWorks(isDebounce?: boolean) {
+    if (isDebounce) {
+      this.loading = true;
+    }
+
     const res = await fetchWorks(this.handleListQuery());
     const { data } = res || ({} as any);
 
     const listData = data?.works || [];
     const totalCount = data?.total_count;
 
-    this.list = listData;
+    if (listData.length) {
+      this.list = this.list.concat(...listData);
+    }
+
     this.loading = false;
     this.totalCount = totalCount;
 
-    if (listData.length === totalCount) {
+    if (this.list.length === totalCount) {
       this.finished = true;
     }
   }
