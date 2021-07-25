@@ -49,11 +49,14 @@ import { EventBus } from "@/utils/eventBus";
       });
       const { data } = res || {};
 
-      next((vm: any) => {
+      setTimeout(() => {
         EventBus.$emit("toggleLoading");
-        vm.loading = false; // home 局部 loading
-        vm.list = data;
-      });
+
+        next((vm: any) => {
+          vm.loading = false; // home 局部 loading
+          vm.list = data;
+        });
+      }, 200);
     } catch (error) {
       next();
     }
@@ -66,20 +69,6 @@ export default class Home extends Vue {
   arrowVisible = true;
   list: ProjectItem[] = [];
   backgroundStyle: any = {};
-
-  async created() {
-    try {
-      const res = await fetchRecommend({
-        pageSize: 15
-      });
-      const { data } = res || {};
-
-      this.loading = false;
-      this.list = data;
-    } catch (error) {
-      console.log(error);
-    }
-  }
 
   handleInitHomeSwiper() {
     const vm = this as any;

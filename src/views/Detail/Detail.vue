@@ -93,7 +93,7 @@ import { EventBus } from "@/utils/eventBus";
     Promise.allSettled([
       fetchMentors(),
       getWorkListById({
-        id: Number(this.$route.params.id)
+        id: Number(to.params.id)
       })
     ])
       .then(res => {
@@ -110,13 +110,16 @@ import { EventBus } from "@/utils/eventBus";
           }
         );
 
-        next((vm: any) => {
+        setTimeout(() => {
           EventBus.$emit("toggleLoading");
-          vm.projectInfo = {
-            ...(workData || {}),
-            teachers: teachers.filter(Boolean)
-          };
-        });
+
+          next((vm: any) => {
+            vm.projectInfo = {
+              ...(workData || {}),
+              teachers: teachers.filter(Boolean)
+            };
+          });
+        }, 200);
       })
       .catch(e => {
         console.log(e);

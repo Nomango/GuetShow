@@ -1,9 +1,13 @@
 <template>
   <div id="app">
     <router-view class="view"></router-view>
-    <div class="global-loading" v-show="loading">
-      <van-loading color="#0094ff" size="24px" vertical>加载中...</van-loading>
-    </div>
+    <transition name="fade">
+      <div class="global-loading" v-show="loading">
+        <van-loading color="#0094ff" size="24px" vertical>
+          加载中...
+        </van-loading>
+      </div>
+    </transition>
   </div>
 </template>
 
@@ -52,5 +56,15 @@ export default {
   justify-content: center;
   background-color: #f5f9ff;
   z-index: 999;
+}
+
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity 0.5s ease-in-out;
+}
+
+.fade-enter,
+.fade-leave-to {
+  opacity: 0;
 }
 </style>
