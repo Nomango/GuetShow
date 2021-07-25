@@ -16,11 +16,8 @@
           <img src="../../assets/Image/next.svg" class="home-arrow-img" />
         </div>
       </div>
-      <HomeImage class="home-background" :style='backgroundStyle' />
+      <HomeImage class="home-background" :style="backgroundStyle" />
     </template>
-    <div class="home-loading" v-else>
-      <van-loading color="#0094ff" size="24px" vertical>加载中...</van-loading>
-    </div>
   </div>
 </template>
 
@@ -36,12 +33,30 @@ import { fetchRecommend } from "@/api/home";
 import { ProjectItem } from "@/types/home";
 import HomeImage from "./Image.vue";
 import * as SwiperAni from "@/utils/swiperAnimate";
+import { EventBus } from "@/utils/eventBus";
 
 @Component({
   components: {
     SlideOne,
     SlideTwo,
     HomeImage
+  },
+  beforeRouteEnter: async (to, form, next) => {
+    EventBus.$emit("toggleLoading", true);
+    try {
+      const res = await fetchRecommend({
+        pageSize: 15
+      });
+      const { data } = res || {};
+
+      next((vm: any) => {
+        EventBus.$emit("toggleLoading");
+        vm.loading = false; // home 局部 loading
+        vm.list = data;
+      });
+    } catch (error) {
+      next();
+    }
   }
 })
 export default class Home extends Vue {
@@ -62,7 +77,7 @@ export default class Home extends Vue {
       this.loading = false;
       this.list = data;
     } catch (error) {
-      console.log(error)
+      console.log(error);
     }
   }
 
@@ -92,10 +107,10 @@ export default class Home extends Vue {
         },
         slideChange: function(swiper: Swiper) {
           if (swiper.isEnd) {
-            vm.backgroundStyle['margin-top'] = '-80px';
+            vm.backgroundStyle["margin-top"] = "-80px";
             vm.arrowVisible = false;
           } else {
-            vm.backgroundStyle['margin-top'] = '60px';
+            vm.backgroundStyle["margin-top"] = "60px";
             vm.arrowVisible = true;
           }
         },

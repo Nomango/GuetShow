@@ -7,7 +7,7 @@
       src="../../assets/Image/logo.png"
       alt=""
     />
-    <div class="header-description">
+    <div class="header-description" id="header-description">
       <div
         class="header-time ani"
         swiper-animate-effect="fadeInLeftBig"
@@ -16,6 +16,7 @@
         2021
       </div>
       <h1
+        id="header-title"
         class="header-title ani"
         swiper-animate-effect="fadeInLeftBig"
         swiper-animate-duration="1.2s"

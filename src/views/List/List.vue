@@ -108,6 +108,7 @@ import { fetchWorks, fetchSchools, fetchMentors } from "@/api/list";
 import { SELECTTYPE, defaultWorksConfig, defaultLevel } from "@/libs/constant";
 import { ProjectItem, TeacherItem } from "@/types/home";
 import { debounce, throttle } from "@/utils/tools";
+import { EventBus } from "@/utils/eventBus";
 
 @Component({
   components: {
@@ -115,6 +116,51 @@ import { debounce, throttle } from "@/utils/tools";
     GList,
     Input,
     Title
+  },
+
+  beforeRouteEnter(to, from, next) {
+    EventBus.$emit("toggleLoading", true);
+    Promise.allSettled([
+      fetchWorks({
+        ...defaultWorksConfig
+      }),
+      fetchSchools(),
+      fetchMentors()
+    ]).then(res => {
+      const [
+        { value: projectRes },
+        { value: schoolRes },
+        { value: mentorRes }
+      ] = res as any;
+
+      const { data: projectResData } = projectRes;
+      const { data: schoolResData } = schoolRes;
+      const { data: mentorResData } = mentorRes;
+
+      next((vm: any) => {
+        const totalCount = projectResData?.total_count || 0;
+        const listData = projectResData?.works || [];
+
+        vm.temp[SELECTTYPE.school].origin = schoolResData || [];
+        vm.temp[SELECTTYPE.school].target = schoolResData || [];
+
+        vm.temp[SELECTTYPE.mentor].origin = mentorResData?.teachers || [];
+        vm.temp[SELECTTYPE.mentor].target = (mentorResData?.teachers || []).map(
+          (item: TeacherItem) => {
+            return item.name;
+          }
+        );
+
+        vm.list = listData;
+        vm.totalCount = totalCount;
+
+        if (listData.length === totalCount) {
+          vm.finished = true;
+        }
+
+        EventBus.$emit("toggleLoading");
+      });
+    });
   }
 })
 export default class List extends Vue {
@@ -150,7 +196,7 @@ export default class List extends Vue {
   showPicker = false;
   curColumns = [];
   list: ProjectItem[] = [];
-  loading = true;
+  loading = false; // 列表加载更多
   totalCount = 0;
   finished = false;
 
@@ -250,10 +296,6 @@ export default class List extends Vue {
   }
 
   async handleGetWorks(isDebounce?: boolean) {
-    if (isDebounce) {
-      this.loading = true;
-    }
-
     const res = await fetchWorks(this.handleListQuery());
     const { data } = res || ({} as any);
 
@@ -286,7 +328,7 @@ export default class List extends Vue {
     });
   }
 
-  onClickLeft() {
+  handleonClickLeft() {
     this.$router.replace({
       path: "/"
     });
@@ -341,10 +383,6 @@ export default class List extends Vue {
       el.style["animation-iteration-count"] = 1;
       done();
     }, delay);
-  }
-
-  handleonClickLeft() {
-    this.$router.go(-1);
   }
 
   @Watch("listQuery", { deep: true })

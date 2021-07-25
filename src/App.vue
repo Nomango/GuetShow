@@ -1,26 +1,34 @@
 <template>
   <div id="app">
-    <!-- <transition :name="transitionName"> -->
     <router-view class="view"></router-view>
-    <!-- </transition> -->
+    <div class="global-loading" v-show="loading">
+      <van-loading color="#0094ff" size="24px" vertical>加载中...</van-loading>
+    </div>
   </div>
 </template>
 
 <script>
+import { EventBus } from "@/utils/eventBus";
+
 export default {
   data() {
     return {
-      transitionName: "fold-left"
+      transitionName: "fold-left",
+      loading: true
     };
   },
-  watch: {
-    $route(to, from) {
-      const routerDeep = ["/list", "/detail"];
-
-      const toDepth = routerDeep.indexOf(to.path);
-      const fromDepth = routerDeep.indexOf(from.path);
-
-      this.transitionName = toDepth > fromDepth ? "fold-left" : "fold-right";
+  mounted() {
+    this.setEvent();
+  },
+  methods: {
+    setEvent() {
+      EventBus.$on("toggleLoading", status => {
+        if (status !== undefined && status !== null) {
+          this.loading = status;
+        } else {
+          this.loading = !this.loading;
+        }
+      });
     }
   }
 };
@@ -33,67 +41,16 @@ export default {
   font-family: FZYINGLT_ZHUNJW;
 }
 
-.fold-left-enter-active {
-  animation-name: fold-left-in;
-  animation-duration: 0.3s;
-}
-
-.fold-left-leave-active {
-  animation-name: fold-left-out;
-  animation-duration: 0.3s;
-}
-
-@keyframes fold-left-in {
-  0% {
-    transform: translate3d(100%, 0, 0);
-  }
-
-  100% {
-    transform: translate3d(0, 0, 0);
-  }
-}
-
-@keyframes fold-left-out {
-  0% {
-    transform: translate3d(0, 0, 0);
-  }
-
-  100% {
-    transform: translate3d(-100%, 0, 0);
-  }
-}
-
-.fold-right-enter-active {
-  animation-name: fold-right-in;
-  animation-duration: 0.3s;
-}
-
-.fold-right-leave-active {
-  animation-name: fold-right-out;
-  animation-duration: 0.3s;
-}
-
-@keyframes fold-right-in {
-  0% {
-    width: 100%;
-    transform: translate3d(-100%, 0, 0);
-  }
-
-  100% {
-    width: 100%;
-    transform: translate3d(0, 0, 0);
-  }
-}
-
-@keyframes fold-right-out {
-  0% {
-    width: 100%;
-    transform: translate3d(0, 0, 0);
-  }
-
-  100% {
-    width: 100%;
-    transform: translate3d(100%, 0, 0);
-  }
+.global-loading {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #f5f9ff;
+  z-index: 999;
 }
 </style>

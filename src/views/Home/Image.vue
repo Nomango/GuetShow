@@ -110,21 +110,32 @@ export default class yourComponent extends Vue {
     }
   ];
 
-  created() {
-    // const columns = this.list.length / 2;
-    // const blockWidth = window.screen.width / columns / 2;
+  mounted() {
+    // const rect = new RandomRect();
+    // console.log("-----", rect.getRect());
+    // this.list = rect.getRect();
+  }
 
+  created() {
+    const columns = this.list.length / 2;
+    const blockWidth = window.screen.width / columns / 2;
     this.list.forEach((val, idx, array) => {
-      // const column = Math.floor(idx / 2);
-      // if (idx % 2) {
-      //   // 下半区
-      //   val.style.bottom = `${Math.random() * window.screen.height * (0.2 + column * 0.05) + 80}px`
-      // } else {
-      //   // 上半区
-      //   val.style.top = `${Math.random() * window.screen.height * (0.1 + column * 0.05)}px`
-      // }
-      // val.style.left = `${(column * 2 + 1) * blockWidth}px`
-      val.style.transform = `scale(0.5) rotate(${Math.random() * 360}deg)`;
+      const column = Math.floor(idx / 2);
+      if (idx % 2) {
+        // 下半区
+        val.style.bottom = `${Math.random() *
+          window.screen.height *
+          (0.2 + column * 0.05) +
+          80}px`;
+      } else {
+        // 上半区
+        val.style.top = `${Math.random() *
+          window.screen.height *
+          (0.1 + column * 0.05)}px`;
+      }
+      val.style.left = `${(column * 2 + 1) * blockWidth}px`;
+      val.style.transform = `scale(${0.3 +
+        Math.random() * 0.2}) rotate(${Math.random() * 360}deg)`;
     });
   }
 }
@@ -280,6 +291,10 @@ export default class yourComponent extends Vue {
 }
 </style>
 <style lang="scss" scoped>
+.list {
+  position: absolute;
+  border: 1px solid #000;
+}
 .guet-background {
   margin-top: 60px;
   position: absolute;
@@ -288,9 +303,7 @@ export default class yourComponent extends Vue {
   width: 100%;
   height: 100%;
   overflow-x: hidden;
-  overflow-y: scroll;
-  perspective: 10px;
-  perspective-origin: 0%;
+  overflow-y: hidden;
   z-index: 1;
   transition: margin-top 1s ease-in-out;
 

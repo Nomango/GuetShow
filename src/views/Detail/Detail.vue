@@ -63,7 +63,10 @@
             </a>
           </span>
         </div>
-        <div class="article-info-item" v-if="!phoneNumber && !studentEmail && projectInfo.connect">
+        <div
+          class="article-info-item"
+          v-if="!phoneNumber && !studentEmail && projectInfo.connect"
+        >
           <span class="article-info-text">
             联系方式：{{ projectInfo.connect }}
           </span>
@@ -81,14 +84,12 @@ import { Route } from "vue-router";
 
 import { getWorkListById, fetchMentors } from "@/api/list";
 import { ProjectItem, TeacherItem } from "@/types/home";
+import { EventBus } from "@/utils/eventBus";
 
-@Component
-export default class Detail extends Vue {
-  projectInfo: ProjectItem = {} as ProjectItem;
+@Component({
+  beforeRouteEnter: async (to: Route, form, next) => {
+    EventBus.$emit("toggleLoading", true);
 
-  loading = true;
-
-  created() {
     Promise.allSettled([
       fetchMentors(),
       getWorkListById({
@@ -109,22 +110,24 @@ export default class Detail extends Vue {
           }
         );
 
-        this.loading = false;
-        this.projectInfo = {
-          ...(workData || {}),
-          teachers: teachers.filter(Boolean)
-        };
+        next((vm: any) => {
+          EventBus.$emit("toggleLoading");
+          vm.projectInfo = {
+            ...(workData || {}),
+            teachers: teachers.filter(Boolean)
+          };
+        });
       })
       .catch(e => {
-        console.log(e)
+        console.log(e);
       });
   }
+})
+export default class Detail extends Vue {
+  projectInfo: ProjectItem = {} as ProjectItem;
 
   get studentName() {
-    return (
-      (this.projectInfo.student && this.projectInfo.student.name) ||
-      ""
-    );
+    return (this.projectInfo.student && this.projectInfo.student.name) || "";
   }
 
   get level() {
