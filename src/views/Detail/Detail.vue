@@ -249,6 +249,7 @@ export default class Detail extends Vue {
 
   .article-info-text {
     margin-left: 6px;
+    font-size: 14px;
 
     a {
       color: #434343;
