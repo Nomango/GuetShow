@@ -262,8 +262,12 @@ export default class List extends Vue {
     const listData = data?.works || [];
     const totalCount = data?.total_count;
 
-    if (listData.length) {
+    if (!isDebounce && listData.length) {
       this.list = this.list.concat(...listData);
+    }
+
+    if (isDebounce) {
+      this.list = listData;
     }
 
     this.loading = false;
