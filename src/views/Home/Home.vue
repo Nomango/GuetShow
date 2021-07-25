@@ -42,21 +42,6 @@ import * as SwiperAni from "@/utils/swiperAnimate";
     SlideOne,
     SlideTwo,
     HomeImage
-  },
-  beforeRouteEnter: async (to, form, next) => {
-    try {
-      const res = await fetchRecommend({
-        pageSize: 15
-      });
-      const { data } = res || {};
-
-      next((vm: any) => {
-        vm.loading = false;
-        vm.list = data;
-      });
-    } catch (error) {
-      next();
-    }
   }
 })
 export default class Home extends Vue {
@@ -66,6 +51,20 @@ export default class Home extends Vue {
   arrowVisible = true;
   list: ProjectItem[] = [];
   backgroundStyle: any = {};
+
+  async created() {
+    try {
+      const res = await fetchRecommend({
+        pageSize: 15
+      });
+      const { data } = res || {};
+
+      this.loading = false;
+      this.list = data;
+    } catch (error) {
+      console.log(error)
+    }
+  }
 
   handleInitHomeSwiper() {
     const vm = this as any;

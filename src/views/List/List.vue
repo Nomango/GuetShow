@@ -115,50 +115,6 @@ import { debounce, throttle } from "@/utils/tools";
     GList,
     Input,
     Title
-  },
-
-  beforeRouteEnter(to, from, next) {
-    Promise.allSettled([
-      fetchWorks({
-        ...defaultWorksConfig
-      }),
-      fetchSchools(),
-      fetchMentors()
-    ]).then(res => {
-      const [
-        { value: projectRes },
-        { value: schoolRes },
-        { value: mentorRes }
-      ] = res as any;
-
-      const { data: projectResData } = projectRes;
-      const { data: schoolResData } = schoolRes;
-      const { data: mentorResData } = mentorRes;
-
-      next((vm: any) => {
-        const totalCount = projectResData?.total_count || 0;
-        const listData = projectResData?.works || [];
-
-        vm.temp[SELECTTYPE.school].origin = schoolResData || [];
-        vm.temp[SELECTTYPE.school].target = schoolResData || [];
-
-        vm.temp[SELECTTYPE.mentor].origin = mentorResData?.teachers || [];
-        vm.temp[SELECTTYPE.mentor].target = (mentorResData?.teachers || []).map(
-          (item: TeacherItem) => {
-            return item.name;
-          }
-        );
-
-        vm.list = listData;
-        vm.totalCount = totalCount;
-
-        if (listData.length === totalCount) {
-          vm.finished = true;
-        }
-
-        vm.loading = false;
-      });
-    });
   }
 })
 export default class List extends Vue {
@@ -197,6 +153,48 @@ export default class List extends Vue {
   loading = true;
   totalCount = 0;
   finished = false;
+
+  created() {
+    Promise.allSettled([
+      fetchWorks({
+        ...defaultWorksConfig
+      }),
+      fetchSchools(),
+      fetchMentors()
+    ]).then(res => {
+      const [
+        { value: projectRes },
+        { value: schoolRes },
+        { value: mentorRes }
+      ] = res as any;
+
+      const { data: projectResData } = projectRes;
+      const { data: schoolResData } = schoolRes;
+      const { data: mentorResData } = mentorRes;
+
+      const totalCount = projectResData?.total_count || 0;
+      const listData = projectResData?.works || [];
+
+      this.temp[SELECTTYPE.school].origin = schoolResData || [];
+      this.temp[SELECTTYPE.school].target = schoolResData || [];
+
+      this.temp[SELECTTYPE.mentor].origin = mentorResData?.teachers || [];
+      this.temp[SELECTTYPE.mentor].target = (mentorResData?.teachers || []).map(
+        (item: TeacherItem) => {
+          return item.name;
+        }
+      );
+
+      this.list = listData;
+      this.totalCount = totalCount;
+
+      if (listData.length === totalCount) {
+        this.finished = true;
+      }
+
+      this.loading = false;
+    });
+  }
 
   debounceGetWorks = debounce(() => {
     this.handleGetWorks(true);

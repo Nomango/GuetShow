@@ -23,17 +23,17 @@
         </div>
         <br />
         <div class="article-info-item">
-          <!-- <span class="article-info-icon">
+          <span class="article-info-icon">
             <img src="../../assets/Image/people.svg" alt="" />
-          </span> -->
+          </span>
           <span class="article-info-text">
             {{ studentName }}
           </span>
         </div>
         <div class="article-info-item" v-if="teachers">
-          <!-- <span class="article-info-icon">
+          <span class="article-info-icon">
             <img src="../../assets/Image/teacher.svg" alt="" />
-          </span> -->
+          </span>
           <span class="article-info-text">{{ teachers }}</span>
         </div>
         <br />
@@ -57,12 +57,13 @@
             <img src="../../assets/Image/email.svg" alt="" />
           </span> -->
           <span class="article-info-text">
+            联系方式：
             <a :href="'mailto:' + studentEmail" v-if="studentEmail">
               {{ studentEmail }}
             </a>
           </span>
         </div>
-        <div class="article-info-item" v-if="!phoneNumber && !studentEmail">
+        <div class="article-info-item" v-if="!phoneNumber && !studentEmail && projectInfo.connect">
           <span class="article-info-text">
             联系方式：{{ projectInfo.connect }}
           </span>
@@ -81,12 +82,17 @@ import { Route } from "vue-router";
 import { getWorkListById, fetchMentors } from "@/api/list";
 import { ProjectItem, TeacherItem } from "@/types/home";
 
-@Component({
-  beforeRouteEnter: async (to: Route, form, next) => {
+@Component
+export default class Detail extends Vue {
+  projectInfo: ProjectItem = {} as ProjectItem;
+
+  loading = true;
+
+  created() {
     Promise.allSettled([
       fetchMentors(),
       getWorkListById({
-        id: Number(to.params.id)
+        id: Number(this.$route.params.id)
       })
     ])
       .then(res => {
@@ -103,27 +109,20 @@ import { ProjectItem, TeacherItem } from "@/types/home";
           }
         );
 
-        next((vm: any) => {
-          vm.loading = false;
-          vm.projectInfo = {
-            ...(workData || {}),
-            teachers: teachers.filter(Boolean)
-          };
-        });
+        this.loading = false;
+        this.projectInfo = {
+          ...(workData || {}),
+          teachers: teachers.filter(Boolean)
+        };
       })
-      .catch(() => {
-        next();
+      .catch(e => {
+        console.log(e)
       });
   }
-})
-export default class Detail extends Vue {
-  projectInfo: ProjectItem = {} as ProjectItem;
-
-  loading = true;
 
   get studentName() {
     return (
-      "学生：" + (this.projectInfo.student && this.projectInfo.student.name) ||
+      (this.projectInfo.student && this.projectInfo.student.name) ||
       ""
     );
   }
