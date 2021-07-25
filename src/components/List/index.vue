@@ -53,7 +53,7 @@ export default class List extends Vue {
       if (this.loading || this.finished || this.error) {
         return;
       }
-      console.log("----- 执行了多少次了", this.loading);
+
       const offset = this.offset;
       const scrollParent = this.scrollParent;
 
@@ -71,8 +71,6 @@ export default class List extends Vue {
       if (isReachEdge) {
         this.$emit("update:loading", true);
         this.$emit("load");
-
-        console.log("------ aaaa -------");
       }
     });
   }

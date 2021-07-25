@@ -124,7 +124,7 @@ export default class yourComponent extends Vue {
       //   val.style.top = `${Math.random() * window.screen.height * (0.1 + column * 0.05)}px`
       // }
       // val.style.left = `${(column * 2 + 1) * blockWidth}px`
-      val.style.transform = `scale(0.5) rotate(${Math.random() * 360}deg)`
+      val.style.transform = `scale(0.5) rotate(${Math.random() * 360}deg)`;
     });
   }
 }
@@ -287,6 +287,10 @@ export default class yourComponent extends Vue {
   top: 0;
   width: 100%;
   height: 100%;
+  overflow-x: hidden;
+  overflow-y: scroll;
+  perspective: 10px;
+  perspective-origin: 0%;
   z-index: 1;
   transition: margin-top 1s ease-in-out;
 
