@@ -47,7 +47,9 @@
             <img src="../../assets/Image/phone.svg" alt="" />
           </span> -->
           <span class="article-info-text">
-            联系方式：<a :href="'tel:' + phoneNumber" v-if="phoneNumber">{{ phoneNumber }}</a>
+            联系方式：<a :href="'tel:' + phoneNumber" v-if="phoneNumber">{{
+              phoneNumber
+            }}</a>
           </span>
         </div>
         <div class="article-info-item" v-if="studentEmail">
@@ -55,7 +57,9 @@
             <img src="../../assets/Image/email.svg" alt="" />
           </span> -->
           <span class="article-info-text">
-            联系方式：<a :href="'mailto:' + studentEmail" v-if="studentEmail">{{ studentEmail }}</a>
+            <a :href="'mailto:' + studentEmail" v-if="studentEmail">
+              {{ studentEmail }}
+            </a>
           </span>
         </div>
         <div class="article-info-item" v-if="!phoneNumber && !studentEmail">
@@ -118,7 +122,10 @@ export default class Detail extends Vue {
   loading = true;
 
   get studentName() {
-    return "学生：" + (this.projectInfo.student && this.projectInfo.student.name) || "";
+    return (
+      "学生：" + (this.projectInfo.student && this.projectInfo.student.name) ||
+      ""
+    );
   }
 
   get level() {
@@ -134,11 +141,17 @@ export default class Detail extends Vue {
   }
 
   get phoneNumber() {
-    return /^0?1[3|4|5|6|7|8][0-9]\d{8}$/.test(this.projectInfo.connect) ? this.projectInfo.connect : '';
+    return /^0?1[3|4|5|6|7|8][0-9]\d{8}$/.test(this.projectInfo.connect)
+      ? this.projectInfo.connect
+      : "";
   }
 
   get studentEmail() {
-    return /^([a-zA-Z]|[0-9])(\w|\-)+@[a-zA-Z0-9]+\.([a-zA-Z]{2,4})$/.test(this.projectInfo.connect) ? this.projectInfo.connect : '';
+    return /^([a-zA-Z]|[0-9])(\w|-)+@[a-zA-Z0-9]+\.([a-zA-Z]{2,4})$/.test(
+      this.projectInfo.connect
+    )
+      ? this.projectInfo.connect
+      : "";
   }
 
   get teachers() {
@@ -151,7 +164,9 @@ export default class Detail extends Vue {
   }
 
   handleonClickLeft() {
-    this.$router.go(-1);
+    this.$router.replace({
+      path: "/list"
+    });
   }
 }
 </script>

@@ -5,6 +5,11 @@
   padding-right: 4px;
 }
 
+.markdown-body video {
+  width: 100%;
+  margin: auto;
+}
+
 .markdown-body .anchor:focus {
   outline: none;
 }
