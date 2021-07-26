@@ -142,6 +142,7 @@ export default class Home extends Vue {
 
 <style lang="scss" scoped>
 .home-container {
+  position: relative;
   width: 100%;
   height: 100%;
   color: #434343;
@@ -162,7 +163,7 @@ export default class Home extends Vue {
 }
 
 .home-arrow {
-  position: fixed;
+  position: absolute;
   left: 0;
   right: 0;
   bottom: 0px;

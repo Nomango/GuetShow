@@ -54,7 +54,7 @@ export default class yourComponent extends Vue {
     {
       class: "guet-triangle",
       style: {
-        right: "10px",
+        // right: "10px",
         top: "45px"
       },
       key: "guetTriangle"
@@ -62,7 +62,7 @@ export default class yourComponent extends Vue {
     {
       class: "guet-square",
       style: {
-        right: "121px",
+        // right: "121px",
         top: "81px"
       },
       key: "guetSquare"
@@ -71,7 +71,7 @@ export default class yourComponent extends Vue {
       class: "guet-triangle",
 
       style: {
-        right: "53px",
+        // right: "53px",
         top: "189px"
       },
       key: "guetTriangle"
@@ -79,7 +79,7 @@ export default class yourComponent extends Vue {
     {
       class: "guet-circle",
       style: {
-        right: "93px",
+        // right: "93px",
         bottom: "320px"
       },
       key: "guetCircle"
@@ -87,7 +87,7 @@ export default class yourComponent extends Vue {
     {
       class: "guet-square",
       style: {
-        right: "20px",
+        // right: "20px",
         bottom: "240px"
       },
       key: "guetSquare"
@@ -117,21 +117,21 @@ export default class yourComponent extends Vue {
   }
 
   created() {
+    const htmlEle = document.documentElement.getBoundingClientRect();
+    const width = htmlEle.width;
+    const height = htmlEle.height;
     const columns = this.list.length / 2;
-    const blockWidth = window.screen.width / columns / 2;
+    const blockWidth = width / columns / 2;
+
     this.list.forEach((val, idx, array) => {
       const column = Math.floor(idx / 2);
       if (idx % 2) {
         // 下半区
-        val.style.bottom = `${Math.random() *
-          window.screen.height *
-          (0.2 + column * 0.05) +
+        val.style.bottom = `${Math.random() * height * (0.2 + column * 0.05) +
           80}px`;
       } else {
         // 上半区
-        val.style.top = `${Math.random() *
-          window.screen.height *
-          (0.1 + column * 0.05)}px`;
+        val.style.top = `${Math.random() * height * (0.1 + column * 0.05)}px`;
       }
       val.style.left = `${(column * 2 + 1) * blockWidth}px`;
       val.style.transform = `scale(${0.3 +

@@ -4,7 +4,6 @@ import router from "./router";
 import store from "./store";
 import FastClick from "fastclick";
 import "animate.css";
-import "lib-flexible";
 
 import "@/styles/index.scss";
 
