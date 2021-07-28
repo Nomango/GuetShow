@@ -14,6 +14,7 @@
     </header>
     <div class="detail-main">
       <h2 class="article-title">{{ projectInfo.name }}</h2>
+      <hr class="article-info-hr" />
       <div class="article-info">
         <div class="article-info-item big" v-if="level">
           <span class="article-info-icon">
@@ -73,6 +74,7 @@
         </div>
       </div>
       <!-- <img class="article-cover" :src="projectInfo.cover" alt="" /> -->
+      <hr class="article-info-hr" />
       <div class="markdown-body" v-html="detailContent" />
     </div>
   </div>
@@ -254,7 +256,7 @@ export default class Detail extends Vue {
 }
 
 .article-info {
-  margin-top: 12px;
+  padding: 12px 0 10px;
   text-align: center;
 }
 
@@ -292,6 +294,14 @@ export default class Detail extends Vue {
   img {
     width: 100%;
   }
+}
+
+.article-info-hr {
+  width: 80%;
+  margin: 0 auto;
+  border: 0;
+  height: 1px;
+  background-image: linear-gradient(to right, rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.45), rgba(0, 0, 0, 0));
 }
 
 .markdown-body {
