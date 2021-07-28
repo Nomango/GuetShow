@@ -39,7 +39,7 @@
           <img src="../../assets/Image/localtion.svg" alt="" />
         </span>
         <span class="header-description-text">
-          桂林电子科技大学F栋教学楼5楼报告厅
+          花江校区 四创中心4号楼108室
         </span>
       </div>
 
@@ -126,7 +126,7 @@ export default class Header extends Vue {}
     .header-description-text {
       position: relative;
       top: 1px;
-      margin-left: -13px;
+      margin-left: -8px;
     }
   }
 
