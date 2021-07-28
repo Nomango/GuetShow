@@ -90,6 +90,7 @@ export default class Header extends Vue {}
   width: 180px;
   font-size: 84px;
   line-height: 91px;
+  text-shadow: 0 0 5px #f5f9ff;
 }
 
 .subtitle-description-item {
@@ -114,6 +115,7 @@ export default class Header extends Vue {}
   font-weight: 500;
   color: #434343;
   line-height: 20px;
+  text-shadow: 0 0 5px #f5f9ff;
 }
 
 .header-description-item {
@@ -127,6 +129,7 @@ export default class Header extends Vue {}
       position: relative;
       top: 1px;
       margin-left: -8px;
+      text-shadow: 0 0 5px #f5f9ff;
     }
   }
 
@@ -135,6 +138,7 @@ export default class Header extends Vue {}
     .header-description-text {
       position: relative;
       top: 1px;
+      text-shadow: 0 0 5px #f5f9ff;
     }
   }
 }
