@@ -40,7 +40,7 @@
         <br />
         <div class="article-info-item">
           <span class="article-info-text">{{ projectInfo.school }}</span>
-          <span class="article-info-text">{{ projectInfo.major }}</span>
+          <span class="article-info-text">{{ projectInfo.major }}专业</span>
         </div>
         <br />
         <div class="article-info-item" v-if="phoneNumber">
