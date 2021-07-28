@@ -221,7 +221,7 @@ export default class SlideTwo extends Vue {
     position: absolute;
     top: 0;
     left: 0;
-    width: 70px;
+    width: 80px;
   }
 
   .project-image {

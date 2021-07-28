@@ -464,7 +464,7 @@ export default class List extends Vue {
       position: absolute;
       left: 10px;
       top: 0;
-      width: 20px;
+      width: 24px;
     }
 
     .project-image {
