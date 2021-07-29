@@ -1,5 +1,6 @@
 <template>
   <div id="app">
+    <img class="hidden-icon" src="./assets/Image/logo_s.png" />
     <router-view class="view"></router-view>
     <transition name="fade">
       <div class="global-loading" v-show="loading">
@@ -66,5 +67,10 @@ export default {
 .fade-enter,
 .fade-leave-to {
   opacity: 0;
+}
+
+.hidden-icon {
+  position: absolute;
+  visibility: hidden;
 }
 </style>

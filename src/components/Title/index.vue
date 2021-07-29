@@ -25,7 +25,7 @@ export default class Title extends Vue {
   .sub-divider {
     display: inline-block;
     margin-top: 12px;
-    font-size: 12px;
+    font-size: 8px;
     font-weight: 500;
     color: #434343;
   }

@@ -2,8 +2,8 @@
   <section class="swiper-slide home-swiper-slide">
     <Title
       class="ani"
-      title="优秀毕设"
-      subTitle="Excellent work"
+      title="随便看看"
+      subTitle="Excellent Graduation Design &amp; Thesis Exhibition"
       swiper-animate-effect="bounceIn"
       swiper-animate-duration="1s"
     />
@@ -92,9 +92,9 @@ export default class SlideTwo extends Vue {
   @Prop() list!: ProjectItem[];
 
   LevelImage = {
-    1: require("../../assets/Image/ranking-11.png"),
-    2: require("../../assets/Image/ranking-22.png"),
-    3: require("../../assets/Image/ranking-33.png")
+    1: require("../../assets/Image/ranking-111.png"),
+    2: require("../../assets/Image/ranking-222.png"),
+    3: require("../../assets/Image/ranking-333.png")
   };
 
   /** 跳转到 详情页 */
@@ -214,13 +214,12 @@ export default class SlideTwo extends Vue {
   width: 100%;
   height: 200px;
   margin-top: 17px;
-  border-radius: 12px 12px 0 0;
-  overflow: hidden;
+  // overflow: hidden;
 
   .project-level-image {
     position: absolute;
-    top: 0;
-    left: 0;
+    top: -8px;
+    left: 4px;
     width: 80px;
   }
 
@@ -228,6 +227,7 @@ export default class SlideTwo extends Vue {
     width: 100%;
     height: 100%;
     object-fit: cover;
+    border-radius: 12px 12px 0 0;
   }
 }
 

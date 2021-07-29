@@ -21,14 +21,14 @@
         swiper-animate-effect="fadeInLeftBig"
         swiper-animate-duration="1.2s"
       >
-        毕设展览
+        优秀毕设
       </h1>
       <div
         class="header-description-item subtitle-description-item ani"
         swiper-animate-effect="fadeInLeftBig"
         swiper-animate-duration="1.4s"
       >
-        <span class="header-description-sub-text">GRADUATION PROJECT SHOW</span>
+        <span class="header-description-sub-text">Excellent Graduation Design<br />&amp;&nbsp;Thesis Exhibition</span>
       </div>
       <div
         class="header-description-item location-description-item ani"

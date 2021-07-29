@@ -37,7 +37,7 @@ module.exports = {
     config.resolve.alias.set("@", resolve("src"));
 
     config.plugin("html").tap(args => {
-      args[0].title = "桂林电子科技大学2021届毕业设计展览";
+      args[0].title = "桂林电子科技大学2021届校级优秀毕业设计（论文）展";
       return args;
     });
 

@@ -3,7 +3,7 @@
     <div class="list-header-left" @click="handleonClickLeft">
       <i class="van-icon van-icon-arrow-left van-nav-bar__arrow"></i>
     </div>
-    <Title title="毕设展览" subTitle="Online Show" />
+    <Title title="优秀毕设" subTitle="Excellent Graduation Design &amp; Thesis Exhibition" />
     <div class="list-content">
       <div class="list-form">
         <div class="list-select-group">
