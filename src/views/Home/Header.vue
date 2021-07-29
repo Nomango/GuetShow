@@ -4,7 +4,7 @@
       class="header-logo ani"
       swiper-animate-effect="bounceInLeft"
       swiper-animate-duration="1s"
-      src="../../assets/Image/logo.png"
+      src="https://guetshow.oss-cn-shenzhen.aliyuncs.com/static/logo_compress.png"
       alt=""
     />
     <div class="header-description" id="header-description">
