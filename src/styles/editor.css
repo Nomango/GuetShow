@@ -98,6 +98,10 @@
   border-style: none;
 }
 
+.markdown-body p img {
+  margin-left: -32px;
+}
+
 .markdown-body code,
 .markdown-body kbd,
 .markdown-body pre {
