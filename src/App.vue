@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-    <img class="hidden-icon" src="./assets/Image/logo_s.png" />
+    <img class="hidden-icon" src="https://guetshow.oss-cn-shenzhen.aliyuncs.com/static/logo_s.png" />
     <router-view class="view"></router-view>
     <transition name="fade">
       <div class="global-loading" v-show="loading">
