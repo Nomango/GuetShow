@@ -28,6 +28,7 @@ export default class Title extends Vue {
     font-size: 8px;
     font-weight: 500;
     color: #434343;
+    text-shadow: 0 0 5px #f5f9ff;
   }
 }
 
@@ -38,6 +39,7 @@ export default class Title extends Vue {
   color: #434343;
   border: none;
   justify-content: center;
+  text-shadow: 0 0 8px #f5f9ff;
 
   &::before,
   &::after {
