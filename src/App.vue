@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-    <img class="hidden-icon" src="https://guetshow.oss-cn-shenzhen.aliyuncs.com/static/logo_s.png" />
+  <div class="hidden-icon" ><img src="https://guetshow.oss-cn-shenzhen.aliyuncs.com/static/logo_m.png" /></div>
     <router-view class="view"></router-view>
     <transition name="fade">
       <div class="global-loading" v-show="loading">
@@ -71,6 +71,6 @@ export default {
 
 .hidden-icon {
   position: absolute;
-  visibility: hidden;
+  display: none;
 }
 </style>

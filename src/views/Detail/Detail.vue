@@ -7,7 +7,7 @@
       <div class="detail-header-right">
         <img
           class="detail-header-logo"
-          src="../../assets/Image/logo.png"
+          src="https://guetshow.oss-cn-shenzhen.aliyuncs.com/static/logo_compress.png"
           alt=""
         />
       </div>
