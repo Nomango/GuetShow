@@ -498,7 +498,7 @@ export default class List extends Vue {
   width: 0; // 显示省略号
   flex: 1;
   margin-left: 8px;
-  text-align: center;
+  text-align: left;
 
   .project-title {
     color: #14232a;
