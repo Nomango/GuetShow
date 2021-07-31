@@ -1,5 +1,6 @@
 import Vue from "vue";
 import VueRouter, { RouteConfig } from "vue-router";
+import { visit } from "@/api/visit";
 
 Vue.use(VueRouter);
 
@@ -25,5 +26,15 @@ const router = new VueRouter({
   routes,
   scrollBehavior: (to, from, savedPosition) => ({ y: 0 } as any)
 });
+
+router.afterEach((to) => {
+  Promise.allSettled([
+      visit({
+      path: to.fullPath
+    })
+  ])
+  .then(() => {})
+  .catch(() => {})
+})
 
 export default router;

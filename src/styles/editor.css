@@ -98,7 +98,7 @@
   border-style: none;
 }
 
-.markdown-body p img {
+.markdown-body p img, .markdown-body p video {
   margin-left: -32px;
 }
 
