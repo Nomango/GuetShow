@@ -7,15 +7,15 @@
       <div
         class="header-footer-item highlight ani"
         swiper-animate-effect="bounceInUp"
-        swiper-animate-duration="3s"
+        swiper-animate-duration="2.4s"
       >桂林电子科技大学教务处</div>
       <div class="header-footer-item ani"
         swiper-animate-effect="bounceInUp"
-        swiper-animate-duration="3s"
+        swiper-animate-duration="2.4s"
       >Copyright©2021 桂林电子科技大学优秀毕业设计（论文）展</div>
       <div class="header-footer-item ani"
         swiper-animate-effect="bounceInUp"
-        swiper-animate-duration="3s"
+        swiper-animate-duration="2.4s"
       >全部作品版权归桂林电子科技大学及作者本人所有</div>
     </div>
   </section>

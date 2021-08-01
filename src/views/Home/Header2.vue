@@ -24,23 +24,23 @@
       />
       <img
         class="header-description-desc ani"
-        swiper-animate-effect="fadeInUp"
-        swiper-animate-duration="1.8s"
+        swiper-animate-effect="fadeInDown"
+        swiper-animate-duration="1.4s"
         src="https://guetshow.oss-cn-shenzhen.aliyuncs.com/static/title-desc.png"
         alt=""
       />
       <!-- <div class="header-description-desc">Excellent Graduation Design &amp; Thesis Exhibition</div> -->
       <div
         class="header-description-title ani"
-        swiper-animate-effect="fadeInUp"
-        swiper-animate-duration="1.8s"
+        swiper-animate-effect="fadeInDown"
+        swiper-animate-duration="1.4s"
         >
         优秀毕业设计（论文）展
       </div>
       <img
         class="header-logo ani"
-        swiper-animate-effect="fadeInRight"
-        swiper-animate-duration="1.8s"
+        swiper-animate-effect="fadeInDown"
+        swiper-animate-duration="1.6s"
         src="https://guetshow.oss-cn-shenzhen.aliyuncs.com/static/logo_tv.png"
         alt=""
       />
