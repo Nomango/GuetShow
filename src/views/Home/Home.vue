@@ -16,7 +16,7 @@
           <img src="../../assets/Image/next.svg" class="home-arrow-img" />
         </div>
       </div>
-      <HomeImage class="home-background" :style="backgroundStyle" />
+      <!-- <HomeImage class="home-background" :style="backgroundStyle" /> -->
     </template>
   </div>
 </template>
@@ -31,7 +31,7 @@ import SlideTwo from "./SlideTwo.vue";
 
 import { fetchRecommend } from "@/api/home";
 import { ProjectItem } from "@/types/home";
-import HomeImage from "./Image.vue";
+// import HomeImage from "./Image.vue";
 import * as SwiperAni from "@/utils/swiperAnimate";
 import { EventBus } from "@/utils/eventBus";
 
@@ -39,7 +39,7 @@ import { EventBus } from "@/utils/eventBus";
   components: {
     SlideOne,
     SlideTwo,
-    HomeImage
+    // HomeImage
   },
   beforeRouteEnter: async (to, form, next) => {
     EventBus.$emit("toggleLoading", true);
@@ -111,7 +111,7 @@ export default class Home extends Vue {
 
             const translate = (progress * swiper.height) / 3;
             const scale = 1 - Math.min(Math.abs(progress * 0.5), 1);
-            const opacity = 1 - Math.min(Math.abs(progress / 2), 0.5);
+            const opacity = 1 - progress;
 
             const style = slide.style;
             style.opacity = opacity;

@@ -27,14 +27,16 @@ const router = new VueRouter({
   scrollBehavior: (to, from, savedPosition) => ({ y: 0 } as any)
 });
 
-router.afterEach((to) => {
-  Promise.allSettled([
-      visit({
-      path: to.fullPath
-    })
-  ])
-  .then(() => {})
-  .catch(() => {})
-})
+if (process.env.ENV == 'production') {
+  router.afterEach((to) => {
+    Promise.allSettled([
+        visit({
+        path: to.fullPath
+      })
+    ])
+    .then(() => {})
+    .catch(() => {})
+  })
+}
 
 export default router;
