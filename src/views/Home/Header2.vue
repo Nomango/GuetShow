@@ -30,13 +30,20 @@
         alt=""
       />
       <!-- <div class="header-description-desc">Excellent Graduation Design &amp; Thesis Exhibition</div> -->
-      <div
+      <!-- <div
         class="header-description-title ani"
         swiper-animate-effect="fadeInDown"
         swiper-animate-duration="1.4s"
         >
         优秀毕业设计（论文）展
-      </div>
+      </div> -->
+      <img
+        class="header-description-title ani"
+        swiper-animate-effect="fadeInDown"
+        swiper-animate-duration="1.4s"
+        src="https://guetshow.oss-cn-shenzhen.aliyuncs.com/static/title.png"
+        alt=""
+      />
       <img
         class="header-logo ani"
         swiper-animate-effect="fadeInDown"
@@ -103,10 +110,12 @@ export default class Header extends Vue {}
   }
 
   .header-description-title {
-    margin-left: 5px;
-    writing-mode: tb-rl;
-    font-size: 40px;
-    color: #0f4c81;
+    margin-left: 8px;
+    // writing-mode: tb-rl;
+    // font-size: 40px;
+    // color: #0f4c81;
+
+    width: 10%;
   }
 
   .header-logo {
