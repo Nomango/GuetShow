@@ -13,10 +13,6 @@ export const defaultWorksConfig = {
 export const defaultLevel = {
   origin: [
     {
-      id: 0,
-      name: "无奖项"
-    },
-    {
       id: 1,
       name: "一等奖"
     },
@@ -29,5 +25,5 @@ export const defaultLevel = {
       name: "三等奖"
     }
   ],
-  target: ["无奖项", "一等奖", "二等奖", "三等奖"]
+  target: ["一等奖", "二等奖", "三等奖"]
 };
