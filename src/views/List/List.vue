@@ -27,7 +27,51 @@
           placeholder="搜索毕设名称 / 学生名称"
         />
       </div>
-      <GList
+      <div class="guet-list-wrap">
+        <GList
+          v-if="list.length"
+          :requestData="handleLoadMore"
+          :refreshData="handleRefreshData"
+          :list="list"
+        >
+          <template v-slot:default="{item}">
+            <div
+              :key="item.id"
+              :data-index="index"
+              class="project-item"
+              @click="handleItemClick(item.id)"
+            >
+              <div class="project-image-wrap">
+                <img v-lazy="item.cover" class="project-image" />
+                <img
+                  v-if="LevelImage[item.level]"
+                  :src="LevelImage[item.level]"
+                  alt=""
+                  class="project-level-image"
+                />
+              </div>
+              <div class="project-content">
+                <h2 class="project-title u-ellipsis">{{ item.name }}</h2>
+                <div class="project-info">
+                  <div class="project-info-image">
+                    <img src="../../assets/Image/people.svg" alt="" />
+                  </div>
+                  <span class="project-owner-name">
+                    {{ item.student && item.student.name }}
+                  </span>
+                  <span class="project-school">
+                    {{ item.school }}
+                  </span>
+                </div>
+                <div class="project-description u-mutiple-ellipsis">
+                  <span>{{ item.brief }}</span>
+                </div>
+              </div>
+            </div>
+          </template>
+        </GList>
+      </div>
+      <!-- <GList
         v-show="list.length"
         :loading.sync="loading"
         :finished="finished"
@@ -61,7 +105,6 @@
               <div class="project-info">
                 <div class="project-info-image">
                   <img src="../../assets/Image/people.svg" alt="" />
-                  <!-- <img src="" alt="" /> -->
                 </div>
                 <span class="project-owner-name">
                   {{ item.student && item.student.name }}
@@ -76,12 +119,12 @@
             </div>
           </div>
         </transition-group>
-      </GList>
-      <van-empty
+      </GList> -->
+      <!-- <van-empty
         v-show="!list.length"
         class="list-custom-image"
         description="暂无数据～"
-      />
+      /> -->
     </div>
 
     <van-popup
@@ -208,18 +251,22 @@ export default class List extends Vue {
 
   throttleGetWorks = throttle(this.handleLoadMore, 100);
 
-  onLoad() {
-    if (this.finished) {
-      return;
-    }
-    this.throttleGetWorks();
+  // onLoad() {
+  //   if (this.finished) {
+  //     return;
+  //   }
+  //   this.throttleGetWorks();
+  // }
+
+  async handleRefreshData() {
+    await this.handleGetWorks();
   }
 
-  handleLoadMore() {
+  async handleLoadMore() {
     const page: number = this.page + 1;
     this.page = page;
 
-    this.handleGetWorks();
+    await this.handleGetWorks();
   }
 
   handleListQuery() {
@@ -406,18 +453,14 @@ export default class List extends Vue {
 }
 
 .list-content {
-  display: flex;
-  flex-direction: column;
   position: relative;
   height: calc(100% - 101px);
   margin-top: 15px;
 }
 
-.list-content .guet-list {
-  flex: 1;
-  overflow: auto;
+.guet-list-wrap {
+  height: calc(100% -  110px);
   margin-top: 20px;
-  padding: 0px 12px 16px;
 }
 
 .list-form {
@@ -432,7 +475,7 @@ export default class List extends Vue {
   display: flex;
   justify-content: space-around;
 
-  .guet-select {
+  .guet-select-wrap {
     flex: 1;
 
     &:not(:last-of-type) {

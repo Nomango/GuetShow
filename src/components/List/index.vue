@@ -1,119 +1,175 @@
 <template>
-  <div class="guet-list" ref="root">
-    <slot />
-    <div class="guet-loading-box" v-if="loading && !finished">
-      <Loading class="guet-loading-icon" text="加载中..." />
-    </div>
-    <div class="guet-finished" v-if="!loading && finished">
-      <span class="guet-finished-text">{{ finishedText }}</span>
-    </div>
-    <div class="guet-error" v-if="error" onClick="{clickErrorText}">
-      <span class="guet-error-text">{{ errorText }}</span>
+  <div class="pulldown-sina">
+    <div
+      class="pulldown-bswrapper"
+      ref="bsWrapper"
+    >
+      <div class="pulldown-scroller">
+        <div class="pulldown-tips">
+          <div v-html="tipText"></div>
+        </div>
+        <ul class="pulldown-list">
+          <template v-for="item in list">
+            <slot :item="item" />
+          </template>
+        </ul>
+        <div class="pullup-tips">
+          <div v-if="!isPullUpLoad" class="before-trigger">
+            <span class="pullup-txt">Pull up and load more</span>
+          </div>
+          <div v-else class="after-trigger">
+            <span class="pullup-txt">Loading...</span>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 </template>
 
 <script lang="ts">
-import { Component, Vue, Prop, Watch } from "vue-property-decorator";
+import { Component, Vue, Prop, Watch } from 'vue-property-decorator'
 
-import Loading from "../Loading/index.vue";
-import { throttle } from "@/utils/tools";
+import BScroll from '@better-scroll/core'
+import PullDown from '@better-scroll/pull-down'
+import PullUp from '@better-scroll/pull-up'
 
-@Component({
-  components: {
-    Loading
+import { ProjectItem, TeacherItem } from "@/types/home";
+
+BScroll.use(PullDown)
+BScroll.use(PullUp)
+
+// pulldownRefresh state
+const PHASE = {
+  moving: {
+    enter: 'enter',
+    leave: 'leave'
+  },
+  fetching: 'fetching',
+  succeed: 'succeed'
+}
+const TIME_BOUNCE = 800
+const THRESHOLD = 70
+const STOP = 56
+const ARROW_BOTTOM = '<svg width="16" height="16" viewBox="0 0 512 512"><path fill="currentColor" d="M367.997 338.75l-95.998 95.997V17.503h-32v417.242l-95.996-95.995l-22.627 22.627L256 496l134.624-134.623l-22.627-22.627z"></path></svg>'
+const ARROW_UP = '<svg width="16" height="16" viewBox="0 0 512 512"><path fill="currentColor" d="M390.624 150.625L256 16L121.376 150.625l22.628 22.627l95.997-95.998v417.982h32V77.257l95.995 95.995l22.628-22.627z"></path></svg>'
+
+const TEXTS_MAP: any = {
+  enter: `${ARROW_BOTTOM} Pull down`,
+  leave: `${ARROW_UP} Release`,
+  fetching: 'Loading...',
+  succeed: 'Refresh succeed'
+}
+
+@Component
+export default class GuetList extends Vue {
+  @Prop({ required: true }) list!: ProjectItem[]
+  @Prop({ required: true }) requestData!: () => Promise<unknown>
+  @Prop({ required: true }) refreshData!: () => Promise<unknown>
+
+  bscroll: any = null
+  tipText = ''
+  isPullUpLoad = false
+
+  async pullingDownHandler() {
+    this.setTipText(PHASE.fetching)
+    await this.refreshData()
+    this.setTipText(PHASE.succeed)
+    // tell BetterScroll to finish pull down
+    this.bscroll.finishPullDown()
+    // waiting for BetterScroll's bounceAnimation then refresh size
+    setTimeout(() => {
+      this.bscroll.refresh()
+    }, TIME_BOUNCE + 50)
   }
-})
-export default class List extends Vue {
-  @Prop() error!: boolean;
-  @Prop() loading!: boolean;
-  @Prop() finished!: boolean;
-  @Prop() errorText!: string;
-  @Prop() loadingText!: string;
-  @Prop() finishedText!: string;
-  @Prop({ default: 200, type: [String, Number] }) offset!: number | string;
 
-  scrollParent: Element | null = null;
-  throttleCheck = throttle(this.check, 100);
+  /** 下拉 */
+  async pullingUpHandler() {
+    this.isPullUpLoad = true
 
-  init() {
-    // eslint-disable-next-line dot-notation
-    const el = this.$refs["root"] as Element;
+    await this.requestData()
+    await new Promise((resolve) => {
+      setTimeout(() => {
+        resolve('')
+      }, 2000)
+    })
 
-    if (el) {
-      this.scrollParent = el;
-      el.addEventListener("scroll", this.throttleCheck);
-    }
+    this.bscroll.finishPullUp()
+    this.bscroll.refresh()
+    this.isPullUpLoad = false
   }
 
-  check() {
-    // 设置节流函数
+  setTipText(phase: string) {
+    this.tipText = TEXTS_MAP[phase]
+  }
 
-    this.$nextTick(() => {
-      if (this.loading || this.finished || this.error) {
-        return;
+  initBscroll() {
+    this.bscroll = new BScroll(this.$refs.bsWrapper as HTMLElement, {
+      scrollY: true,
+      bounceTime: TIME_BOUNCE,
+      useTransition: false,
+      pullUpLoad: true,
+      pullDownRefresh: {
+        threshold: THRESHOLD,
+        stop: STOP
       }
+    })
 
-      const offset = this.offset;
-      const scrollParent = this.scrollParent;
-
-      if (!scrollParent) {
-        return;
-      }
-
-      let isReachEdge = false;
-      const bottom =
-        scrollParent.scrollHeight -
-        (scrollParent.clientHeight + scrollParent.scrollTop);
-
-      isReachEdge = bottom <= offset;
-
-      if (isReachEdge) {
-        this.$emit("update:loading", true);
-        this.$emit("load");
-      }
-    });
-  }
-
-  removeInit() {
-    if (this.scrollParent) {
-      this.scrollParent.removeEventListener("scroll", this.throttleCheck);
-    }
-  }
-
-  @Watch("loading")
-  @Watch("finished")
-  @Watch("error")
-  statusChange() {
-    this.throttleCheck();
+    this.bscroll.on('pullingDown', this.pullingDownHandler)
+    this.bscroll.on('pullingUp', this.pullingUpHandler)
+    this.bscroll.on('scrollEnd', () => {
+      console.log('scrollEnd')
+    })
+    this.bscroll.on('enterThreshold', () => {
+      this.setTipText(PHASE.moving.enter)
+    })
+    this.bscroll.on('leaveThreshold', () => {
+      this.setTipText(PHASE.moving.leave)
+    })
   }
 
   mounted() {
-    this.init();
+    this.$nextTick(() => {
+      this.initBscroll()
+    })
   }
 
-  destroyed() {
-    this.removeInit();
+  @Watch('list', { deep: true })
+  listChange (newVal: string, oldVal: string) {
+    this.$nextTick(() => {
+      if (this.bscroll) {
+        this.bscroll.refresh()
+      }
+    })
   }
 }
 </script>
 
 <style lang="scss" scoped>
-.guet-finished,
-.guet-error,
-.guet-loading {
-  color: #969799;
-  font-size: 14px;
-  line-height: 50px;
+.pulldown-sina {
+  height: 100%;
+}
+
+.pulldown-bswrapper {
+  position: relative;
+  height: 100%;
+  padding: 0px 12px 16px;
+  overflow: hidden;
+}
+
+.pulldown-tips {
+  position: absolute;
+  width: 100%;
+  padding: 20px;
+  box-sizing: border-box;
+  transform: translateY(-100%) translateZ(0);
   text-align: center;
+  color: #999;
 }
 
-.guet-finished-text {
-  font-size: 12px;
-  color: #ccc;
+.pullup-tips {
+  padding: 20px;
+  text-align: center;
+  color: #999;
 }
 
-.guet-loading-box {
-  margin-top: 5px;
-}
 </style>

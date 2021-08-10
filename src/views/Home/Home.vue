@@ -38,7 +38,7 @@ import { EventBus } from "@/utils/eventBus";
 @Component({
   components: {
     SlideOne,
-    SlideTwo,
+    SlideTwo
     // HomeImage
   },
   beforeRouteEnter: async (to, form, next) => {

@@ -1,16 +1,19 @@
 <template>
-  <div
-    class="guet-select"
-    :class="{ 'guet-select_active': active, 'guet-select_disabled': disabled }"
-  >
-    <span @click="showPicker" v-if="selectedText" class="guet-select-text">
-      {{ selectedText }}
-    </span>
-    <span @click="showPicker" v-else class="guet-select-placeholder">
-      {{ _placeholder }}
-    </span>
-    <i v-if="!selectedText" class="guet-select-icon" />
-    <div class="guet-select-close" v-else @click="handleClose">
+  <div class="guet-select-wrap">
+    <div
+      @click="showPicker"
+      class="guet-select"
+      :class="{ 'guet-select_active': active, 'guet-select_disabled': disabled }"
+    >
+      <span v-if="selectedText" class="guet-select-text">
+        {{ selectedText }}
+      </span>
+      <span v-else class="guet-select-placeholder">
+        {{ _placeholder }}
+      </span>
+      <i v-if="!selectedText" class="guet-select-icon" />
+    </div>
+    <div class="guet-select-close" v-if="selectedText" @click="handleClose">
       <van-icon name="close" />
     </div>
   </div>
@@ -48,11 +51,16 @@ export default class Select extends Vue {
 </script>
 
 <style lang="scss" scoped>
+.guet-select-wrap {
+  position: relative;
+}
+
 .guet-select {
   position: relative;
-  padding: 5px 20px 5px 10px;
+  padding: 0 20px 0 10px;
   font-size: 14px;
-  line-height: 18px;
+  height: 28px;
+  line-height: 28px;
   color: #666;
   border-radius: 4px;
   background-color: #fff;
