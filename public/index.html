@@ -98,9 +98,11 @@
             docEl.style.height = 736 + "px";
             docEl.style.background = "#fff";
             let pop = document.querySelector('.van-popup');
-            pop.style.width = 414 + "px";
-            pop.style.margin = "auto";
-            pop.style.right = "0px"           
+            if (pop) {
+              pop.style.width = 414 + "px";
+              pop.style.margin = "auto";
+              pop.style.right = "0px";
+            }
           }
 
           var rem = width / 10;

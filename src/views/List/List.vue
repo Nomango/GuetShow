@@ -36,8 +36,6 @@
         >
           <template v-slot:default="{item}">
             <div
-              :key="item.id"
-              :data-index="index"
               class="project-item"
               @click="handleItemClick(item.id)"
             >
