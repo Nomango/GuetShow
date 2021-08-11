@@ -45,7 +45,8 @@ const PHASE = {
     leave: 'leave'
   },
   fetching: 'fetching',
-  succeed: 'succeed'
+  succeed: 'succeed',
+  top: 'top',
 }
 const TIME_BOUNCE = 800
 const THRESHOLD = 70
@@ -57,7 +58,8 @@ const TEXTS_MAP: any = {
   enter: `${ARROW_BOTTOM} 下拉刷新`,
   leave: `${ARROW_UP} 释放刷新`,
   fetching: '加载中...',
-  succeed: '刷新成功'
+  succeed: '刷新成功',
+  top: '已经到顶啦',
 }
 
 @Component
@@ -71,9 +73,10 @@ export default class GuetList extends Vue {
   isPullUpLoad = false
 
   async pullingDownHandler() {
-    this.setTipText(PHASE.fetching)
-    await this.refreshData()
-    this.setTipText(PHASE.succeed)
+    this.setTipText(PHASE.top)
+    // this.setTipText(PHASE.fetching)
+    // await this.refreshData()
+    // this.setTipText(PHASE.succeed)
     // tell BetterScroll to finish pull down
     this.bscroll.finishPullDown()
     // waiting for BetterScroll's bounceAnimation then refresh size
@@ -120,10 +123,12 @@ export default class GuetList extends Vue {
       console.log('scrollEnd')
     })
     this.bscroll.on('enterThreshold', () => {
-      this.setTipText(PHASE.moving.enter)
+      this.setTipText(PHASE.top)
+      // this.setTipText(PHASE.moving.enter)
     })
     this.bscroll.on('leaveThreshold', () => {
-      this.setTipText(PHASE.moving.leave)
+      this.setTipText(PHASE.top)
+      // this.setTipText(PHASE.moving.leave)
     })
   }
 
