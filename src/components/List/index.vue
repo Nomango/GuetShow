@@ -35,11 +35,13 @@ import { Component, Vue, Prop, Watch } from 'vue-property-decorator'
 import BScroll from '@better-scroll/core'
 import PullDown from '@better-scroll/pull-down'
 import PullUp from '@better-scroll/pull-up'
+import MouseWheel from '@better-scroll/mouse-wheel'
 
 import { ProjectItem, TeacherItem } from "@/types/home";
 
 BScroll.use(PullDown)
 BScroll.use(PullUp)
+BScroll.use(MouseWheel)
 
 // pulldownRefresh state
 const PHASE = {
@@ -122,7 +124,8 @@ export default class GuetList extends Vue {
       pullDownRefresh: {
         threshold: THRESHOLD,
         stop: STOP
-      }
+      },
+      mouseWheel: true
     })
 
     this.bscroll.on('pullingDown', this.pullingDownHandler)
