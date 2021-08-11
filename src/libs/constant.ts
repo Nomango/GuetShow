@@ -24,10 +24,6 @@ export const defaultLevel = {
       id: 3,
       name: "三等奖"
     },
-    {
-      id: 0,
-      name: "不过滤"
-    },
   ],
-  target: ["一等奖", "二等奖", "三等奖", "不过滤"]
+  target: ["一等奖", "二等奖", "三等奖"]
 };

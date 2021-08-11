@@ -14,7 +14,10 @@
           </template>
         </ul>
         <div class="pullup-tips">
-          <div v-if="!isPullUpLoad" class="before-trigger">
+          <div v-if="finished" class="before-trigger">
+            <span class="pullup-txt">已经到底啦</span>
+          </div>
+          <div v-else-if="!isPullUpLoad" class="before-trigger">
             <span class="pullup-txt">下拉加载更多</span>
           </div>
           <div v-else class="after-trigger">
@@ -67,6 +70,7 @@ export default class GuetList extends Vue {
   @Prop({ required: true }) list!: ProjectItem[]
   @Prop({ required: true }) requestData!: () => Promise<unknown>
   @Prop({ required: true }) refreshData!: () => Promise<unknown>
+  @Prop({ required: true }) finished!: boolean
 
   bscroll: any = null
   tipText = ''
@@ -87,15 +91,15 @@ export default class GuetList extends Vue {
 
   /** 下拉 */
   async pullingUpHandler() {
-    this.isPullUpLoad = true
-
-    await this.requestData()
-    await new Promise((resolve) => {
-      setTimeout(() => {
-        resolve('')
-      }, 2000)
-    })
-
+    if (!this.finished) {
+      this.isPullUpLoad = true
+      await this.requestData()
+      await new Promise((resolve) => {
+        setTimeout(() => {
+          resolve('')
+        }, 2000)
+      })
+    }
     this.bscroll.finishPullUp()
     this.bscroll.refresh()
     this.isPullUpLoad = false
@@ -120,7 +124,7 @@ export default class GuetList extends Vue {
     this.bscroll.on('pullingDown', this.pullingDownHandler)
     this.bscroll.on('pullingUp', this.pullingUpHandler)
     this.bscroll.on('scrollEnd', () => {
-      console.log('scrollEnd')
+      // console.log('scrollEnd')
     })
     this.bscroll.on('enterThreshold', () => {
       this.setTipText(PHASE.top)

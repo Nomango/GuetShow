@@ -33,6 +33,7 @@
           :requestData="handleLoadMore"
           :refreshData="handleRefreshData"
           :list="list"
+          :finished="finished"
         >
           <template v-slot:default="{item}">
             <div
@@ -40,7 +41,7 @@
               @click="handleItemClick(item.id)"
             >
               <div class="project-image-wrap">
-                <img v-lazy="item.cover" class="project-image" />
+                <img :src="item.cover" class="project-image" />
                 <img
                   v-if="LevelImage[item.level]"
                   :src="LevelImage[item.level]"
@@ -320,6 +321,8 @@ export default class List extends Vue {
 
     if (this.list.length === totalCount) {
       this.finished = true;
+    } else {
+      this.finished = false;
     }
   }
 
