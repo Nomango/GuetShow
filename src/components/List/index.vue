@@ -15,10 +15,10 @@
         </ul>
         <div class="pullup-tips">
           <div v-if="!isPullUpLoad" class="before-trigger">
-            <span class="pullup-txt">Pull up and load more</span>
+            <span class="pullup-txt">下拉加载更多</span>
           </div>
           <div v-else class="after-trigger">
-            <span class="pullup-txt">Loading...</span>
+            <span class="pullup-txt">加载中...</span>
           </div>
         </div>
       </div>
@@ -54,10 +54,10 @@ const ARROW_BOTTOM = '<svg width="16" height="16" viewBox="0 0 512 512"><path fi
 const ARROW_UP = '<svg width="16" height="16" viewBox="0 0 512 512"><path fill="currentColor" d="M390.624 150.625L256 16L121.376 150.625l22.628 22.627l95.997-95.998v417.982h32V77.257l95.995 95.995l22.628-22.627z"></path></svg>'
 
 const TEXTS_MAP: any = {
-  enter: `${ARROW_BOTTOM} Pull down`,
-  leave: `${ARROW_UP} Release`,
-  fetching: 'Loading...',
-  succeed: 'Refresh succeed'
+  enter: `${ARROW_BOTTOM} 下拉刷新`,
+  leave: `${ARROW_UP} 释放刷新`,
+  fetching: '加载中...',
+  succeed: '刷新成功'
 }
 
 @Component

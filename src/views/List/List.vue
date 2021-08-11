@@ -361,6 +361,7 @@ export default class List extends Vue {
         (this.listQuery as any)[key] = value;
       }
     }
+    this.page = defaultWorksConfig.page;
     this.activeType = SELECTTYPE.default;
     this.showPicker = false;
   }
