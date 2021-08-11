@@ -105,6 +105,10 @@ export default class GuetList extends Vue {
     this.isPullUpLoad = false
   }
 
+  scrollToTop() {
+    this.bscroll.scrollTo(0, 0, 300)
+  }
+
   setTipText(phase: string) {
     this.tipText = TEXTS_MAP[phase]
   }

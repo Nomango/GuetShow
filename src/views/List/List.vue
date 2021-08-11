@@ -34,6 +34,7 @@
           :refreshData="handleRefreshData"
           :list="list"
           :finished="finished"
+          ref="GList"
         >
           <template v-slot:default="{item}">
             <div
@@ -362,7 +363,8 @@ export default class List extends Vue {
         (this.listQuery as any)[key] = value;
       }
     }
-    this.page = defaultWorksConfig.page;
+    this.page = defaultWorksConfig.page; // 恢复到第一页
+    (this.$refs.GList as GList).scrollToTop(); // 列表回到顶部
     this.activeType = SELECTTYPE.default;
     this.showPicker = false;
   }
