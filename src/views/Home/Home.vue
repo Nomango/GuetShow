@@ -76,6 +76,11 @@ export default class Home extends Vue {
       direction: "vertical",
       watchSlidesProgress: true,
       mousewheel: true,
+      lazy: {
+        loadPrevNext: true
+      },
+      observeParents: true,
+      observer: true,
       on: {
         init: function(swiper) {
           SwiperAni.swiperAnimateCache(); // 隐藏动画元素
@@ -114,8 +119,11 @@ export default class Home extends Vue {
             const opacity = 1 - progress;
 
             const style = slide.style;
-            style.opacity = opacity;
-            style.transform = style.MsTransform = style.msTransform = style.MozTransform = style.OTransform = style.transform = `translate3d(0, ${translate}px, -${translate}px) scaleY(${scale})`;
+
+            requestAnimationFrame(() => {
+              style.opacity = opacity;
+              style.transform = style.MsTransform = style.msTransform = style.MozTransform = style.OTransform = style.transform = `translate3d(0, ${translate}px, -${translate}px) scaleY(${scale})`;
+            })
           }
         },
         setTransition: function(this: any, swiper: Swiper, transition: number) {
