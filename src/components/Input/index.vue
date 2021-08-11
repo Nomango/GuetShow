@@ -1,19 +1,22 @@
 <template>
-  <div class="guet-input" :class="wrapClass">
-    <input
-      class="guet-input__inner"
-      :value="inputVal"
-      :autocomplete="autocomplete"
-      :type="type"
-      :placeholder="placeholder"
-      @input="handleInput"
-      @change="handleChange"
-      @focus="handleFocus"
-      @blur="handleBlur"
-    />
-    <span class="guet-input__prefix">
-      <van-icon name="search" />
-    </span>
+  <div class="guet-input-wrapper">
+    <div class="guet-input" :class="wrapClass" @click="handleInputClick">
+      <input
+        ref="input"
+        class="guet-input__inner"
+        :value="inputVal"
+        :autocomplete="autocomplete"
+        :type="type"
+        :placeholder="placeholder"
+        @input="handleInput"
+        @change="handleChange"
+        @focus="handleFocus"
+        @blur="handleBlur"
+      />
+      <span class="guet-input__prefix">
+        <van-icon name="search" />
+      </span>
+    </div>
     <span class="guet-input__clear" v-show="showClear" @click="handleClear">
       <van-icon name="clear" />
     </span>
@@ -32,12 +35,16 @@ export default class Input extends Vue {
 
   isFocus = false;
 
-  handleFocus() {
+  handleFocus(event: any) {
     this.isFocus = true;
     this.$emit("focus", event);
   }
 
-  handleBlur() {
+  handleBlur(event: any) {
+    // setTimeout(() => {
+    //   this.isFocus = false;
+    //   this.$emit("blur", event);
+    // }, 100);
     this.isFocus = false;
     this.$emit("blur", event);
   }
@@ -51,11 +58,13 @@ export default class Input extends Vue {
   }
 
   handleClear() {
-    this.$nextTick(() => {
-      this.$emit("input", "");
-      this.$emit("change", "");
-      this.$emit("clear");
-    });
+    this.$emit("input", "");
+    this.$emit("change", "");
+    this.$emit("clear");
+  }
+
+  handleInputClick() {
+    (this.$refs.input as any)?.focus();
   }
 
   get wrapClass() {
@@ -63,7 +72,8 @@ export default class Input extends Vue {
   }
 
   get showClear() {
-    return this.isFocus && this.value;
+    // return this.isFocus && this.value;
+    return this.value;
   }
 
   get inputVal() {
@@ -73,12 +83,19 @@ export default class Input extends Vue {
 </script>
 
 <style lang="scss" scoped>
-.guet-input {
+.guet-input-wrapper {
   position: relative;
   display: inline-block;
   font-size: 14px;
   width: 100%;
 }
+
+// .guet-input {
+//   position: relative;
+//   display: inline-block;
+//   font-size: 14px;
+//   width: 100%;
+// }
 
 .guet-input__inner {
   -webkit-appearance: none;

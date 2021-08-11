@@ -29,12 +29,12 @@
       </div>
       <div class="guet-list-wrap">
         <GList
-          v-if="list.length"
+          v-show="list.length"
           :requestData="handleLoadMore"
           :refreshData="handleRefreshData"
           :list="list"
           :finished="finished"
-          ref="GList"
+          ref="gList"
         >
           <template v-slot:default="{item}">
             <div
@@ -315,6 +315,10 @@ export default class List extends Vue {
 
     if (isDebounce) {
       this.list = listData;
+      this.page = defaultWorksConfig.page; // 恢复到第一页
+      setTimeout(() => {
+        (this.$refs.gList as GList)?.scrollToTop(); // 列表回到顶部
+      }, 100);
     }
 
     this.loading = false;
@@ -363,8 +367,6 @@ export default class List extends Vue {
         (this.listQuery as any)[key] = value;
       }
     }
-    this.page = defaultWorksConfig.page; // 恢复到第一页
-    (this.$refs.GList as GList).scrollToTop(); // 列表回到顶部
     this.activeType = SELECTTYPE.default;
     this.showPicker = false;
   }
@@ -470,7 +472,7 @@ export default class List extends Vue {
 .list-form {
   padding: 0 30px;
 
-  .guet-input {
+  .guet-input-wrapper {
     margin-top: 12px;
   }
 }
