@@ -125,7 +125,8 @@ export default class GuetList extends Vue {
         threshold: THRESHOLD,
         stop: STOP
       },
-      mouseWheel: true
+      mouseWheel: true,
+      click: true
     })
 
     this.bscroll.on('pullingDown', this.pullingDownHandler)
