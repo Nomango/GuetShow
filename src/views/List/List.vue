@@ -520,7 +520,7 @@ export default class List extends Vue {
 }
 
 .guet-list-wrap {
-  height: calc(100% -  110px);
+  height: calc(100% - 86px);
   margin-top: 20px;
 }
 
@@ -608,8 +608,8 @@ export default class List extends Vue {
 
   .project-image-wrap {
     position: relative;
-    width: 90px;
-    height: 90px;
+    width: 84px;
+    height: 84px;
     border-radius: 6px;
 
     .project-level-image {

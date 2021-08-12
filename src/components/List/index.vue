@@ -168,7 +168,7 @@ export default class GuetList extends Vue {
 .pulldown-bswrapper {
   position: relative;
   height: 100%;
-  padding: 0px 12px 16px;
+  padding: 0px 30px 16px;
   overflow: hidden;
 }
 
