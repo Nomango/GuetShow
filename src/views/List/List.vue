@@ -303,6 +303,9 @@ export default class List extends Vue {
   }
 
   async handleGetWorks(isDebounce?: boolean) {
+    if (isDebounce) {
+      this.page = defaultWorksConfig.page; // 恢复到第一页
+    }
     const res = await fetchWorks(this.handleListQuery());
     const { data } = res || ({} as any);
 
@@ -315,7 +318,6 @@ export default class List extends Vue {
 
     if (isDebounce) {
       this.list = listData;
-      this.page = defaultWorksConfig.page; // 恢复到第一页
       setTimeout(() => {
         (this.$refs.gList as GList)?.scrollToTop(); // 列表回到顶部
       }, 100);
