@@ -43,7 +43,7 @@
           <span class="list-query-clear list-select-group-item" @click="handleClear">
             <van-icon name="revoke" /> 重置
           </span>
-          <span class="list-query-clear list-select-group-item" @click="debounceGetWorks">
+          <span class="list-query-clear list-select-group-item" @click="handleConfirmSearch">
             <van-icon name="success" /> 确认
           </span>
         </div>
@@ -400,6 +400,11 @@ export default class List extends Vue {
     this.debounceGetWorks();
   }
 
+  handleConfirmSearch() {
+    this.showFilter = false;
+    this.debounceGetWorks();
+  }
+
   handleClear() {
     this.listQuery = {
       query: "",
@@ -407,7 +412,6 @@ export default class List extends Vue {
       level: "",
       school: ""
     };
-    this.debounceGetWorks()
   }
 
   reset() {
