@@ -5,7 +5,18 @@
     </div>
     <Title title="优秀毕设" subTitle="Excellent Graduation Design &amp; Thesis Exhibition" />
     <div class="list-content">
-      <div class="list-form">
+      <div class="list-form" :class="[showFilter ? 'show-filter' : '']">
+        <div class="list-select-group">
+          <span class="list-order-by list-select-group-item" @click="handleOrderBy">
+            <van-icon name="sort" /> {{orderByTitle}}
+          </span>
+          <span class="list-filter list-select-group-item" @click="handleOpenSearch">
+            <van-icon name="filter-o" /> 按条件查找
+          </span>
+        </div>
+        <div class="list-filter-title">
+          - 过滤条件 -
+        </div>
         <div class="list-select-group">
           <Select
             v-model="listQuery.school"
@@ -22,10 +33,23 @@
             @select-close="handleSelectClose(3)"
           />
         </div>
-        <Input
-          v-model="listQuery.query"
-          placeholder="搜索毕设名称 / 学生名称"
-        />
+        <div class="list-select-group">
+          <Input
+            v-model="listQuery.query"
+            placeholder="搜索毕设名称 / 学生名称"
+          />
+        </div>
+        <div class="list-select-group">
+          <span class="list-query-clear list-select-group-item" @click="handleClear">
+            <van-icon name="revoke" /> 重置
+          </span>
+          <span class="list-query-clear list-select-group-item" @click="handleConfirmSearch">
+            <van-icon name="success" /> 确认
+          </span>
+        </div>
+        <div class="list-filter-title">
+          <van-icon name="close" @click="handleOpenSearch" />
+        </div>
       </div>
       <div class="guet-list-wrap">
         <GList
@@ -244,6 +268,9 @@ export default class List extends Vue {
   loading = false; // 列表加载更多
   totalCount = 0;
   finished = false;
+  showFilter = false;
+  orderBy = "level";
+  orderByTitle = "按评级排序";
 
   debounceGetWorks = debounce(() => {
     this.handleGetWorks(true);
@@ -297,6 +324,7 @@ export default class List extends Vue {
 
     return {
       ...query,
+      orderBy: this.orderBy,
       page: this.page,
       pageSize: this.pageSize
     };
@@ -357,6 +385,35 @@ export default class List extends Vue {
     this.reset();
   }
 
+  handleOpenSearch() {
+    this.showFilter = !this.showFilter;
+  }
+
+  handleOrderBy() {
+    if (this.orderBy == "level") {
+      this.orderBy = "name";
+      this.orderByTitle = "按名称排序";
+    } else {
+      this.orderBy = "level";
+      this.orderByTitle = "按评级排序";
+    }
+    this.debounceGetWorks();
+  }
+
+  handleConfirmSearch() {
+    this.showFilter = false;
+    this.debounceGetWorks();
+  }
+
+  handleClear() {
+    this.listQuery = {
+      query: "",
+      mentor: "",
+      level: "",
+      school: ""
+    };
+  }
+
   reset() {
     this.activeType = SELECTTYPE.default;
     this.showPicker = false;
@@ -400,10 +457,10 @@ export default class List extends Vue {
     }, delay);
   }
 
-  @Watch("listQuery", { deep: true })
-  activeTypeChange(val: any, oldVal: any) {
-    this.debounceGetWorks();
-  }
+  // @Watch("listQuery", { deep: true })
+  // activeTypeChange(val: any, oldVal: any) {
+  //   this.debounceGetWorks();
+  // }
 }
 </script>
 
@@ -463,25 +520,18 @@ export default class List extends Vue {
 .list-content {
   position: relative;
   height: calc(100% - 101px);
-  margin-top: 15px;
+  margin-top: 3px;
 }
 
 .guet-list-wrap {
-  height: calc(100% -  110px);
+  height: calc(100% - 86px);
   margin-top: 20px;
-}
-
-.list-form {
-  padding: 0 30px;
-
-  .guet-input-wrapper {
-    margin-top: 12px;
-  }
 }
 
 .list-select-group {
   display: flex;
   justify-content: space-around;
+  margin-top: 12px;
 
   .guet-select-wrap {
     flex: 1;
@@ -490,6 +540,61 @@ export default class List extends Vue {
       margin-right: 6px;
     }
   }
+
+  .list-select-group-item {
+    -webkit-appearance: none;
+    background-color: #fff;
+    border-radius: 4px;
+    border: 1px solid #dcdfe6;
+    box-sizing: border-box;
+    color: #606266;
+    display: inline-block;
+    font-size: inherit;
+    height: 30px;
+    line-height: 30px;
+    outline: none;
+    transition: border-color 0.2s cubic-bezier(0.645, 0.045, 0.355, 1);
+    padding: 0 10px;
+    width: 100%;
+    text-align: center;
+
+    &:not(:last-of-type) {
+      margin-right: 6px;
+    }
+
+    .van-icon {
+      top: 2px;
+    }
+  }
+
+  .list-query-clear {
+    width: 100%;
+  }
+}
+
+.list-filter-title {
+  margin-top: 12px;
+  text-align: center;
+  font-size: 14px;
+
+  .van-icon {
+    padding: 5px 10px;
+  }
+}
+
+.list-form {
+  padding: 0 30px;
+  max-height: 50px;
+  overflow-y: hidden;
+  transition: max-height .5s ease;
+
+  // .guet-input-wrapper {
+  //   margin-top: 12px;
+  // }
+}
+
+.list-form.show-filter {
+  max-height: 280px;
 }
 
 .project-item {
@@ -507,8 +612,8 @@ export default class List extends Vue {
 
   .project-image-wrap {
     position: relative;
-    width: 90px;
-    height: 90px;
+    width: 84px;
+    height: 84px;
     border-radius: 6px;
 
     .project-level-image {

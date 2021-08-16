@@ -13,9 +13,9 @@
       </span>
       <i v-if="!selectedText" class="guet-select-icon" />
     </div>
-    <div class="guet-select-close" v-if="selectedText" @click="handleClose">
+    <!-- <div class="guet-select-close" v-if="selectedText" @click="handleClose">
       <van-icon name="close" />
-    </div>
+    </div> -->
   </div>
 </template>
 
