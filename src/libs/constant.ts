@@ -6,6 +6,7 @@ export enum SELECTTYPE {
 }
 
 export const defaultWorksConfig = {
+  orderBy: "level",
   page: 1,
   pageSize: 10
 };
