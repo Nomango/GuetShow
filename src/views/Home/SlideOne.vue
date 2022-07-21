@@ -3,7 +3,7 @@
     <div class="home-main">
       <HeaderCom />
     </div>
-    <div class="header-footer">
+    <!-- <div class="header-footer">
       <div
         class="header-footer-item highlight ani"
         swiper-animate-effect="bounceInUp"
@@ -17,7 +17,7 @@
         swiper-animate-effect="bounceInUp"
         swiper-animate-duration="2.4s"
       >全部作品版权归桂林电子科技大学及作者本人所有</div>
-    </div>
+    </div> -->
   </section>
 </template>
 
